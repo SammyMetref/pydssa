@@ -1,4 +1,4 @@
-![Data Sequence](figures/or3d_illustration1.png)
+![Illustration](figures/or3d_illustration1.png =x20)
 
 # or3d - 3D Ocean Reconstruction package
 
