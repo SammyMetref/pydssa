@@ -49,12 +49,12 @@ You can find the examples in 'or3d/data/examples/' or launch them directly from 
 
 ## Available methods
 
-### 1. SSH mapping from nadir and SWOT observations
+### SSH mapping from nadir and SWOT observations
 
 - Optimal Interpolation (see for instance Le Traon and Dibarboure., 1999) 
 
 
-### 2. Vertical reconstruction from SSH maps 
+### Vertical reconstruction from SSH maps 
 
 - Effective surface quasigeostrophic framework (eSQG; see Qiu et al., 2020)
 
