@@ -1,3 +1,5 @@
+![Data Sequence](figures/or3d_illustration1.png)
+
 # or3d - 3D Ocean Reconstruction package
 
 This package contains codes and sample notebooks for downloading and processing the SSH mapping and vertical reconstruction tools.

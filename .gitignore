@@ -1,0 +1,10 @@
+__pycache__
+*~
+*/*.pyc
+*/*/*.pyc
+data/*/*.nc
+build
+dist
+/*.egg-info
+*.egg-info
+*.lock
