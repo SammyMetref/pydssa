@@ -16,27 +16,33 @@ A set of example notebooks is provided (see below) for everyone to be able to st
 
 #### For examples 3 and 4:
 
-The observation data is hosted here with the following directory structure
- 
+The observation data are hosted [here](https://ige-meom-opendap.univ-grenoble-alpes.fr/thredds/catalog/meomopendap/extract/ocean-data-challenges/dc_data1/catalog.html) with the following directory structure
+
+```
+.
 |-- dc_obs
 |   |-- 2020a_SSH_mapping_NATL60_topex-poseidon_interleaved.nc
-|   |-- 2020a_SSH_mapping_NATL60_nadir_swot.nc 
+|   |-- 2020a_SSH_mapping_NATL60_nadir_swot.nc
 |   |-- 2020a_SSH_mapping_NATL60_karin_swot.nc
 |   |-- 2020a_SSH_mapping_NATL60_jason1.nc
 |   |-- 2020a_SSH_mapping_NATL60_geosat2.nc
-|   |-- 2020a_SSH_mapping_NATL60_envisat.nc 
+|   |-- 2020a_SSH_mapping_NATL60_envisat.nc
+
+``` 
 
 and should be stored in 'or3D/data/SSH_obs/'.
 
-To start out download the observation dataset (dc_obs, 285M) using :
+To start out download the *observation* dataset (dc_obs, 285M) using :
 
-wget https://ige-meom-opendap.univ-grenoble-alpes.fr/thredds/fileServer/meomopendap/extract/ocean-data-challenges/dc_data1/dc_obs.tar.gz :
+```shell
+wget https://ige-meom-opendap.univ-grenoble-alpes.fr/thredds/fileServer/meomopendap/extract/ocean-data-challenges/dc_data1/dc_obs.tar.gz
+```
  
 and then uncompress the files using tar -xvf <file>.tar.gz. You may also use ftp, rsync or curlto donwload the data.
 
 ### Run examples
 
-You can follow find the examples in 'or3d/data/examples/' or launch them directly from "binder".
+You can find the examples in 'or3d/data/examples/' or launch them directly from "binder".
 
 
 ## Available methods
