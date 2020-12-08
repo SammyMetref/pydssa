@@ -1,0 +1,16 @@
+Metadata-Version: 1.2
+Name: or3d
+Version: 0.0.1
+Summary: Reconstruction of ocean 3d fields using surface maps and observations
+Home-page: https://github.com/SammyMetref/or3d
+Author: Sammy Metref
+Author-email: sammy.metref@univ-grenoble-alpes.fr
+License: UNKNOWN
+Description-Content-Type: text/markdown
+Description: # 3dor - 3D Ocean Reconstruction package
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
