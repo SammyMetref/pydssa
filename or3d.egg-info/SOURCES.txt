@@ -1,7 +1,0 @@
-README.md
-or3d/__init__.py
-or3d/or3d.py
-or3d.egg-info/PKG-INFO
-or3d.egg-info/SOURCES.txt
-or3d.egg-info/dependency_links.txt
-or3d.egg-info/top_level.txt
