@@ -1,7 +1,4 @@
-```{r  out.height = "20%"}
-include_graphics('figures/or3d_illustration1.png') 
-```
-
+![Illustration](or3d_illustration1.png) <!-- .element height="100%" width="20%" -->
 # or3d - 3D Ocean Reconstruction package
 
 This package contains codes and sample notebooks for downloading and processing the SSH mapping and vertical reconstruction tools.
