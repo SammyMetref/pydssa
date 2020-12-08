@@ -1,4 +1,6 @@
-![Illustration](figures/or3d_illustration1.png =150x20)
+```{r  out.height = "20%"}
+include_graphics('figures/or3d_illustration1.png') 
+```
 
 # or3d - 3D Ocean Reconstruction package
 
