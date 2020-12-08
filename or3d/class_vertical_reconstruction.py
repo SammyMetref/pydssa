@@ -79,7 +79,7 @@ class vertical_reconstruction:
         initialize spectral space and arrays for esqg reconstruction
         """
         
-        import scipy.fftpack as fft # Check xfft (parallelisable)
+        import scipy.fftpack as fft
         
         # Compute Fourier transform 
         self.ssha_hat = fft.fft2(self.ssha,[self.sp_pad*self.nx,self.sp_pad*self.ny]) 
@@ -174,8 +174,13 @@ class vertical_reconstruction:
             
             
     def plot_reconstruction_outputs(self,crop1=0,crop2=-1,crop3=0,crop4=-1): 
-        """
-        plot reconstruction outputs
+        """ 
+        plot_reconstruction_outputs
+
+    DESCRIPTION 
+        Plot surface variables (ssha, ssda, ssta) and 3D variables (psi, relvort_norm, buoy, vertvel) if they exist.
+
+        Returns:  None
         """
         
         import matplotlib.pyplot as plt
