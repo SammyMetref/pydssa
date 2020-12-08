@@ -10,6 +10,20 @@ The examples can be run online using: "binder"
 The goal is to illustrate in an observation system simulation experiment (OSSE) how to best reconstruct ocean vertical quantities, such as vertical velocity, from partial sea surface height (SSH) observations: conventional altimetry nadirs and future SWOT observations. The methods and codes present in this package are meant to evolve and adapt to different input observations. In anticipation of the SWOT CalVal missions, the ultimate goal of this package is to be prepared to deal with real nadir and SWOT observations when they arrive and to be able to combine these altimetric observations with in situ observations in order to produce the best 3D ocean reconstructions.  
 A set of example notebooks is provided (see below) for everyone to be able to start and play as quickly as possible.
 
+## Installation 
+
+After cloning the or3D repository, install the package by typing in a terminal (from outside the or3D repository): 
+
+```shell
+pip install -e /or3d/
+```
+
+you can then import and use or3d as any python package
+
+```shell
+import or3d
+```
+
 ## Examples
 
 ### Download the example data
