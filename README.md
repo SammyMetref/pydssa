@@ -12,7 +12,7 @@ A set of example notebooks is provided (see below) for everyone to be able to st
 
 ## Installation 
 
-After cloning the or3D repository, install the package by typing in a terminal (from outside the or3D repository): 
+After cloning the or3d repository, install the package by typing in a terminal (from outside the or3d repository): 
 
 ```shell
 pip install -e /or3d/
@@ -20,7 +20,7 @@ pip install -e /or3d/
 
 you can then import and use or3d as any python package
 
-```shell
+```python
 import or3d
 ```
 
