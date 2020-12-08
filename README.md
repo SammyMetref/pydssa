@@ -1,4 +1,4 @@
-![Illustration](figures/or3d_illustration1.png =x20)
+![Illustration](figures/or3d_illustration1.png =150x20)
 
 # or3d - 3D Ocean Reconstruction package
 
