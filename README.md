@@ -1,4 +1,4 @@
-<img src="or3d_illustration1.png" width="100%", height="200">
+![Illustration](or3d_illustration1.png)
 
 # or3d - 3D Ocean Reconstruction package
 
