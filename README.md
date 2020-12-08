@@ -1,6 +1,6 @@
-![Illustration](or3d_illustration1.png)
-
 # or3d - 3D Ocean Reconstruction package
+
+![Illustration](figures/or3d_illustration1.png)
 
 This package contains codes and sample notebooks for downloading and processing the SSH mapping and vertical reconstruction tools.
 The examples can be run online using: "binder"
