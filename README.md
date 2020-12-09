@@ -72,10 +72,13 @@ You can find the examples in 'or3d/data/examples/' or launch them directly from 
 
 - Effective surface quasigeostrophic framework (eSQG; see Qiu et al., 2020)
 
-
+- Geostrophic kinematic deformation (aka QG Q vector or frontogenesis vector) at the surface only (Hoskins et al., 1978)
 
 ## References
 
-- Qiu, B., Chen, S., Klein, P., Torres, H., Wang, J., Fu, L., & Menemenlis, D. (2020). Reconstructing Upper-Ocean Vertical Velocity Field from Sea Surface Height in the Presence of Unbalanced Motion, Journal of Physical Oceanography, 50(1), 55-79. Retrieved Dec 8, 2020, from https://journals.ametsoc.org/view/journals/phoc/50/1/jpo-d-19-0172.1.xml
+- Hoskins, B.J., Draghici, I. and Davies, H.C. (1978), A new look at the ω‐equation. Q.J.R. Meteorol. Soc., 104: 31-38. https://doi.org/10.1002/qj.49710443903
 
 - Le Traon, P. Y., & Dibarboure, G. (1999). Mesoscale Mapping Capabilities of Multiple-Satellite Altimeter Missions, Journal of Atmospheric and Oceanic Technology, 16(9), 1208-1223. Retrieved Dec 8, 2020, from https://journals.ametsoc.org/view/journals/atot/16/9/1520-0426_1999_016_1208_mmcoms_2_0_co_2.xml
+
+- Qiu, B., Chen, S., Klein, P., Torres, H., Wang, J., Fu, L., & Menemenlis, D. (2020). Reconstructing Upper-Ocean Vertical Velocity Field from Sea Surface Height in the Presence of Unbalanced Motion, Journal of Physical Oceanography, 50(1), 55-79. Retrieved Dec 8, 2020, from https://journals.ametsoc.org/view/journals/phoc/50/1/jpo-d-19-0172.1.xml
+
