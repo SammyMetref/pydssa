@@ -2,46 +2,48 @@ import numpy as np
 
 class vertical_reconstruction:
     """
-    Reconstruction of ocean 3d fields using surface maps
+    Reconstruction of ocean 3d fields using surface maps.
     
     Requirement of initialization:
-    ssh:   sea surface height
-    ssd:   sea surface density 
-    sst:   sea surface temperature 
+    ------------------------------
+    ssh:   sea surface height (needed for esqg and geo. kinematic deformation)     
+    sst:   sea surface temperature (needed for geo. kinematic deformation)
     lon:   longitude  
     lat:   latitudes  
     z:     vertical levels
     N0:    effective buoyancy  
     C:     SQG ratio between SST and SSH
     sppad: proportional spectral padding coefficient
-    corrN: vertical correlation of N0 
+    Nprofile: vertical profile of N0 
+    
+    Available functions:
+    --------------------
+    # eSQG functions #
+        - init_esqg: initialize vertical reconstruction attributes
+        - init_esqg_spectral_space: initialize arrays for esqg reconstruction
+        - run_esqg: run esqg reconstruction
+    # Omega kinematic deformation functions #
+        - init_geokindef: initialize arrays for geostrophic kinematic deformation reconstruction
+        - run_geokindef: run geostrophic kinematic deformation reconstruction at the surface
+    # Plot functions #
+        - plot_reconstruction_outputs: plot surface and 3D reconstruction outputs
     """
 
-    def __init__(self,ssh=None,ssd=None,sst=None,lon=None,lat=None,z=None,N0=None,C=1.,sppad=1,corrN=None,periodsmooth=30):
-        """
-        NAME 
-            __init__
-
-        DESCRIPTION 
-            Initialize vertical reconstruction attributes
-        
-            Returns: None  
-        """ 
+    def __init__(self,ssh=None,sst=None,lon=None,lat=None,z=None,N0=None,C=1.,sppad=1,Nprofile=None,periodsmooth=30):
 
         # Input surface maps
-        self.ssh = ssh
-        self.ssd = ssd
+        self.ssh = ssh 
         self.sst = sst
         self.lon = lon
         self.lat = lat
         self.z = z #np.linspace(0,-1000,100)
 
         # Problem parameters
-        self.N0 = N0 #80*self.f0                                     # Predefined
-        self.C = C #12                                         # Predefined
+        self.N0 = N0                                   
+        self.C = C                                     
         self.g = 9.81
         self.sp_pad = sppad
-        self.corrN = corrN
+        self.Nprofile = Nprofile
         self.periodsmooth = periodsmooth 
 
         
@@ -50,13 +52,13 @@ class vertical_reconstruction:
         
     def init_esqg(self):
         """
-        NAME 
-            init_esqg
-
-        DESCRIPTION 
-            Initialize arrays for esqg reconstruction
+        Initialize arrays for esqg reconstruction. 
         
-            Returns: None   
+        Parameters
+        ----------
+        
+        Returns
+        -------
         """ 
         
         if self.ssh is None: 
@@ -91,13 +93,13 @@ class vertical_reconstruction:
         
     def init_esqg_spectral_space(self):
         """
-        NAME 
-            init_esqg_spectral_space
-
-        DESCRIPTION 
-            Initialize spectral space and arrays for esqg reconstruction
+        Initialize spectral space and arrays for esqg reconstruction. 
         
-            Returns: None  
+        Parameters
+        ----------
+        
+        Returns
+        -------
         """
         
         import scipy.fftpack as fft # Check xfft (parallelisable)
@@ -116,12 +118,12 @@ class vertical_reconstruction:
         self.N0_hat[:self.nx,:self.ny] = self.N0
 
         # Initialize N on the vertical 
-        if self.corrN is None: 
+        if self.Nprofile is None: 
             self.N = np.dstack([self.N0_hat]*self.nz)
         else:
             self.N = np.zeros([self.skx,self.sky,self.nz]) 
             for iz in range(self.nz): 
-                self.N[:,:,iz] = self.N0_hat*self.corrN[iz]
+                self.N[:,:,iz] = self.N0_hat*self.Nprofile[iz]
 
         # Compute kh 
         kx = 2*np.pi*fft.fftfreq(self.skx)
@@ -141,13 +143,29 @@ class vertical_reconstruction:
             
     def run_esqg(self): 
         """ 
-        NAME 
-            run_esqg
-
-        DESCRIPTION 
-            Run esqg reconstruction
+        Run effective surface quasigeostrophic (eSQG) framework reconstruction. 
         
-            Returns: None 
+        Parameters
+        ----------
+        
+        Returns
+        -------
+            
+        Notes
+        -----
+        The effective surface quasigeostrophic (eSQG) framework only uses information on the sea surface height and
+        deduce the subinertial, balanced streamfunction, relative vorticity, buoyancy and vertical velocity. The 
+        surface information is also reconstructed on the vertical by using an effective buoyancy frequency and by
+        assuming that the surface and the vertical are related and that their relationship is wavenumber dependent 
+        (see Qiu et al., 2020). Therefore, the computation is performed in the spectral space throughout. 
+        
+        References
+        ----------
+        Qiu, B., Chen, S., Klein, P., Torres, H., Wang, J., Fu, L., & Menemenlis, D. (2020). Reconstructing Upper-
+        Ocean Vertical Velocity Field from Sea Surface Height in the Presence of Unbalanced Motion, Journal of 
+        Physical Oceanography, 50(1), 55-79. Retrieved Dec 8, 2020, from
+        https://journals.ametsoc.org/view/journals/phoc/50/1/jpo-d-19-0172.1.xml
+        
         """
 
         import scipy.fftpack as fft
@@ -201,18 +219,17 @@ class vertical_reconstruction:
             
             
     #####
-    # Omega kinematic deformation functions
-    
+    # Omega kinematic deformation functions 
     
     def init_geokindef(self):
         """
-        NAME 
-            init_geokindef
-
-        DESCRIPTION 
-            Initialize arrays for geostrophic kinematic deformation reconstruction
+        Initialize arrays for geostrophic kinematic deformation reconstruction 
         
-            Returns: None 
+        Parameters
+        ----------
+        
+        Returns
+        -------
         """ 
         
         if self.ssh is None or self.sst is None : 
@@ -238,49 +255,71 @@ class vertical_reconstruction:
         
         
     def run_geokindef(self): 
-        """
-        NAME 
-            run_geokindef
-
-        DESCRIPTION 
-            Run geostrophic kinematic deformation reconstruction at the surface 
-            (part of the omega equation forcing and a.k.a. the QG Q vector or the frontogenesis vector)
+        """ 
+        Run geostrophic kinematic deformation reconstruction at the surface. 
         
-            Returns: None
+        Parameters
+        ----------
+        
+        Returns
+        -------
+            
+        Notes
+        -----
+        The geostrophic kinematic deformation reconstruction is part of the omega equation forcing and is also known 
+        as the QG Q vector or the frontogenesis vector (see Qiu et al., 2020 ; Hoskins et al., 1978)
+        
+        References
+        ----------
+        Qiu, B., Chen, S., Klein, P., Torres, H., Wang, J., Fu, L., & Menemenlis, D. (2020). Reconstructing Upper-
+        Ocean Vertical Velocity Field from Sea Surface Height in the Presence of Unbalanced Motion, Journal of 
+        Physical Oceanography, 50(1), 55-79. Retrieved Dec 8, 2020, from
+        https://journals.ametsoc.org/view/journals/phoc/50/1/jpo-d-19-0172.1.xml
+
+        Hoskins, B.J., Draghici, I. and Davies, H.C. (1978), A new look at the ω‐equation. Q.J.R. Meteorol. Soc., 
+        104: 31-38. https://doi.org/10.1002/qj.49710443903
+        
         """
   
         # Initialize esqg 
         self.init_geokindef()
         
+        # Compute geostrophic velocities
         u_g, v_g = ssh2uv(self.ssha,self.dx,self.dy,self.f0,self.g)
           
+        # Compute gradients
         gradx_u, grady_u = gradT(u_g,self.dx,self.dy)
         gradx_v, grady_v = gradT(v_g,self.dx,self.dy) 
-        gradx_sst, grady_sst = gradT(self.ssta,self.dx,self.dy)
-        
+        gradx_sst, grady_sst = gradT(self.sst,self.dx,self.dy)
+         
         # Compute Q vector
         q_vector = np.zeros([2,self.nx,self.ny])
-        q_vector[0,:,:] = gradx_u * gradx_sst + gradx_v * grady_sst
-        q_vector[1,:,:] = grady_u * gradx_sst + grady_v * grady_sst
+        q_vector[0,:,:] = (gradx_u * gradx_sst + gradx_v * grady_sst)/self.sst.mean()
+        q_vector[1,:,:] = (grady_u * gradx_sst + grady_v * grady_sst)/self.sst.mean()
         
         # Compute divergence of Q vector 
         gradx_q1, tmp = gradT(q_vector[0,:,:],self.dx,self.dy)
         tmp, grady_q2 = gradT(q_vector[0,:,:],self.dx,self.dy)
         self.geokindef = gradx_q1 + grady_q2
+        # np.sqrt(q_vector[0,:,:]**2 + q_vector[1,:,:]**2) # 
         
             
     #####
     # Plot functions
             
     def plot_reconstruction_outputs(self,crop1=0,crop2=-1,crop3=0,crop4=-1): 
-        """ 
-        NAME 
-            plot_reconstruction_outputs
-
-        DESCRIPTION 
-            Plot surface and 3D reconstruction outputs
+        """  
+        Surface and 3D reconstruction output plots
         
-            Returns: None
+        Parameters
+        ----------
+        crop1,crop2 : int 
+            First and last indices on the x-axis for a zoomed plot. 
+        crop3,crop4 : int 
+            First and last indices on the y-axis for a zoomed plot
+
+        Returns
+        ------- 
         """
         
         import matplotlib.pyplot as plt
@@ -345,17 +384,27 @@ class vertical_reconstruction:
                 plt.title('Meridional cross section at '+str("%.1f" % np.abs(self.lon[1,int(self.ny/2)]))+'°W')
             ivar +=1
 
+            
+
+#####
+# Other useful functions
+                
 
 def jacobian(aa,bb,dx,dy):
     """ 
-    
-    NAME 
-        jacobian
+    Compute the jacobian J(aa,bb) of two matrices aa and bb in function of x and y
+         
+    Parameters
+    ----------
+    aa,bb : array_like
+        ssh field to smooth the borders
+    dx, dy : array_like
+        The arrays containing the x- and y-axis increments in meters.
 
-    DESCRIPTION 
-        Computer the jacobian J(aa,bb) of two matrices aa and bb in function of x and y
-
-        Returns:  Jacobian array
+    Returns
+    -------
+    jacob : array_like
+        jacobian 
         
     """ 
     
@@ -364,22 +413,26 @@ def jacobian(aa,bb,dx,dy):
     aa_y, aa_x = gradT(aa,dx,dy)
     bb_y, bb_x = gradT(bb,dx,dy) 
     
-    return aa_x*bb_y - bb_x*aa_y #aa_x/dx*bb_y/dy - bb_x/dx*aa_y/dy
+    jacob = aa_x*bb_y - bb_x*aa_y #aa_x/dx*bb_y/dy - bb_x/dx*aa_y/dy
+    
+    return jacob
 
 
-def smooth_border_domain(ssh,bordersize=30):
-    """
-    NAME 
-        smooth_border_domain
+def smooth_border_domain(field,bordersize=30):
+    """ 
+    Field smoother to periodic at border of the domain
+         
+    Parameters
+    ----------
+    field : array_like
+        field to smooth the borders
+    bordersize : scalar
+        Distance from border above where smoothing is performed
 
-    DESCRIPTION 
-        Smooth SSH to periodic at border of the domain
-        
-        Args: 
-            ssh : array of ssh values to smooth
-            bordersize : Distance from border above where smoothing is performed
-
-        Returns:  ssh field with smooth borders 
+    Returns
+    -------
+    field_smoothed : array_like  
+        field with smooth borders 
         
     """
     plot4verif = False
@@ -387,45 +440,46 @@ def smooth_border_domain(ssh,bordersize=30):
         import matplotlib.pyplot as plt 
         plt.figure(figsize=(15,6))
         plt.subplot(121)
-        plt.imshow(ssh)
+        plt.imshow(field)
         plt.colorbar()
         
     
-    ssh_dim1 = np.shape(ssh)[0]
-    ssh_dim2 = np.shape(ssh)[1]
-    ssh_smoothed = ssh
+    field_dim1 = np.shape(field)[0]
+    field_dim2 = np.shape(field)[1]
+    field_smoothed = field
     smoother = ana_gaspari_cohn(np.arange(bordersize),2*bordersize) #np.arange(bordersize)[::-1]/(bordersize-1)#
     
-    for i in range(ssh_dim1):
-        ssh_smoothed[i,:bordersize] = ssh_smoothed[i,:bordersize]*smoother[::-1] + ssh_smoothed[i,ssh_dim2-bordersize:]*(1-smoother[::-1]) 
-        ssh_smoothed[i,ssh_dim2-bordersize:] = ssh_smoothed[i,ssh_dim2-bordersize:]*smoother + ssh_smoothed[i,:bordersize]*(1-smoother) 
-    for j in range(ssh_dim2):
-        ssh_smoothed[:bordersize,j] = ssh_smoothed[:bordersize,j]*smoother[::-1] + ssh_smoothed[ssh_dim1-bordersize:,j]*(1-smoother[::-1]) 
-        ssh_smoothed[ssh_dim1-bordersize:,j] = ssh_smoothed[ssh_dim1-bordersize:,j]*smoother + ssh_smoothed[:bordersize,j]*(1-smoother) 
+    for i in range(field_dim1):
+        field_smoothed[i,:bordersize] = field_smoothed[i,:bordersize]*smoother[::-1] + field_smoothed[i,field_dim2-bordersize:]*(1-smoother[::-1]) 
+        field_smoothed[i,field_dim2-bordersize:] = field_smoothed[i,field_dim2-bordersize:]*smoother + field_smoothed[i,:bordersize]*(1-smoother) 
+    for j in range(field_dim2):
+        field_smoothed[:bordersize,j] = field_smoothed[:bordersize,j]*smoother[::-1] + field_smoothed[field_dim1-bordersize:,j]*(1-smoother[::-1]) 
+        field_smoothed[field_dim1-bordersize:,j] = field_smoothed[field_dim1-bordersize:,j]*smoother + field_smoothed[:bordersize,j]*(1-smoother) 
         
     if plot4verif: 
         plt.subplot(122)
-        plt.imshow(ssh_smoothed)
+        plt.imshow(field_smoothed)
         plt.colorbar()
         plt.show()
            
-    return ssh   
+    return field_smoothed   
 
 
 def ana_gaspari_cohn(r,c):
-    """
-    NAME 
-        ana_smoothing_gaspari_cohn
+    """ 
+    Gaspari-Cohn function
+  
+    Parameters
+    ----------
+    r : array_like 
+        Array to which the Gaspari-Cohn function will be applied to
+    c : scalar
+        Distance above which the return values are zeros
 
-    DESCRIPTION 
-        Gaspari-Cohn function. 
-        
-        Args: 
-            r : array of value whose the Gaspari-Cohn function will be applied
-            c : Distance above which the return values are zeros
-
-
-        Returns:  smoothed values 
+    Returns
+    -------
+    gp : array_like
+        Resulting array of the Gaspari-Cohn function applied to r 
             
     """ 
     
@@ -446,17 +500,28 @@ def ana_gaspari_cohn(r,c):
             gp = gp[0]
     return gp
 
-def ssh2uv(ssh,dx,dy,f0,g): 
-    """ 
-    NAME 
-        h2uv
 
-    DESCRIPTION 
-        Compute geostrophic u,v from ssh 
- 
-        Returns:
-            u (2D array): Zonal velocity  
-            v (2D array): Meridional velocity
+def ssh2uv(ssh,dx,dy,f0,g): 
+    """   
+    Compute geostrophic u,v from ssh. 
+  
+    Parameters
+    ----------
+    t_field : array_like
+        A horizontal sea surface height field of same shape as dx an dy. 
+    dx, dy : array_like
+        The arrays containing the x- and y-axis increments in meters.
+    f0 : array_like
+        The Coriolis parameter field (previously computed at the right longitude and latitude).
+    g : scalar
+        Gravity constant.
+        
+    Returns
+    -------
+    u : array_like
+        Zonal velocity.  
+    v : array_like 
+        Meridional velocity.
 
     """
                                
@@ -477,15 +542,21 @@ def ssh2uv(ssh,dx,dy,f0,g):
 
 def gradT(t_field,dx,dy):
     """ 
-    NAME 
-        gradT
-
-    DESCRIPTION 
-        gradient of temperature fields
-
-        Returns:
-            gradT_x (2D array): Zonal gradient  
-            gradT_y (2D array): Meridional gradient
+    Return gradient of t_fields computed on the center of a cell c-grid. 
+    
+    Parameters
+    ----------
+    t_field : array_like
+        A horizontal field of same shape as dx an dy. 
+    dx, dy : array_like
+        The arrays containing the x- and y-axis increments in meters.
+        
+    Returns
+    -------
+    gradT_x : array_like
+        Zonal gradient.  
+    gradT_y : array_like 
+        Meridional gradient.
 
     """ 
       
@@ -505,44 +576,62 @@ def gradT(t_field,dx,dy):
 
 
 def compute_dxdy(field,lon,lat):
-
-        ny,nx,=np.shape(lon)
-
-        mask=np.zeros((ny,nx))+2
-        mask[:2,:]=1
-        mask[:,:2]=1
-        mask[-3:,:]=1
-        mask[:,-3:]=1
-        dx=np.zeros((ny,nx))
-        dy=np.zeros((ny,nx)) 
-
-
-        for i in range(1,ny-1):
-            for j in range(1,nx-1): 
-                dlony=lon[i+1,j]-lon[i,j]
-                dlaty=lat[i+1,j]-lat[i,j]
-                dlonx=lon[i,j+1]-lon[i,j]
-                dlatx=lat[i,j+1]-lat[i,j]
-                dx[i,j]=np.sqrt((dlonx*111000*np.cos(lat[i,j]*np.pi/180))**2 + (dlatx*111000)**2)
-                dy[i,j]=np.sqrt((dlony*111000*np.cos(lat[i,j]*np.pi/180))**2 + (dlaty*111000)**2)
-                if (np.isnan(field[i,j])):
-                    for p1 in range(-2,3):
-                        for p2 in range(-2,3):
-                            itest=i+p1
-                            jtest=j+p2
-                            if ((itest>=0) & (itest<=ny-1) & (jtest>=0) & (jtest<=nx-1)):
-                                mask[itest,jtest]=1
-
-        dx[0,:]=dx[1,:]
-        dx[-1,:]=dx[-2,:] 
-        dx[:,0]=dx[:,1]
-        dx[:,-1]=dx[:,-2]
-        dy[0,:]=dy[1,:]
-        dy[-1,:]=dy[-2,:] 
-        dy[:,0]=dy[:,1]
-        dy[:,-1]=dy[:,-2]
-        mask[np.where((np.isnan(field)))]=0
+    """ 
+    Return x- and y-axis increments in meters. 
+    
+    Parameters
+    ----------
+    t_field : array_like
+        A horizontal field of same shape as lon an lat. 
+    lon, lat : array_like
+        The arrays containing longitude and latitude in degrees.
         
-        return dx,dy
+    Returns
+    -------
+    dx : array_like
+        Zonal increments in meters.  
+    dy : array_like 
+        Meridional increments in meters.
+
+    """ 
+
+    ny,nx,=np.shape(lon)
+
+    mask=np.zeros((ny,nx))+2
+    mask[:2,:]=1
+    mask[:,:2]=1
+    mask[-3:,:]=1
+    mask[:,-3:]=1
+    dx=np.zeros((ny,nx))
+    dy=np.zeros((ny,nx)) 
+
+
+    for i in range(1,ny-1):
+        for j in range(1,nx-1): 
+            dlony=lon[i+1,j]-lon[i,j]
+            dlaty=lat[i+1,j]-lat[i,j]
+            dlonx=lon[i,j+1]-lon[i,j]
+            dlatx=lat[i,j+1]-lat[i,j]
+            dx[i,j]=np.sqrt((dlonx*111000*np.cos(lat[i,j]*np.pi/180))**2 + (dlatx*111000)**2)
+            dy[i,j]=np.sqrt((dlony*111000*np.cos(lat[i,j]*np.pi/180))**2 + (dlaty*111000)**2)
+            if (np.isnan(field[i,j])):
+                for p1 in range(-2,3):
+                    for p2 in range(-2,3):
+                        itest=i+p1
+                        jtest=j+p2
+                        if ((itest>=0) & (itest<=ny-1) & (jtest>=0) & (jtest<=nx-1)):
+                            mask[itest,jtest]=1
+
+    dx[0,:]=dx[1,:]
+    dx[-1,:]=dx[-2,:] 
+    dx[:,0]=dx[:,1]
+    dx[:,-1]=dx[:,-2]
+    dy[0,:]=dy[1,:]
+    dy[-1,:]=dy[-2,:] 
+    dy[:,0]=dy[:,1]
+    dy[:,-1]=dy[:,-2]
+    mask[np.where((np.isnan(field)))]=0
+
+    return dx,dy
 
 

@@ -5,25 +5,28 @@ import logging
 class ssh_mapping:
     """
     Mapping of 2d SSH fields using nadir or SWOT observations
+     
+    Requirement of initialization:
+    ------------------------------ 
+    obs_in: array of observation paths
+    lonlat_minmax: domain [ min longitude, max longitude, min latitude, max latitude] 
+    time_minmax: domain [min,max] time
+    dx: zonal grid spatial step (in degree)
+    dy: meridional grid spatial step (in degree)
+    dt: temporal grid step 
+    simu_start_date: Nature run initial date
     
-    Requirement of initialization: 
-    
+    Available functions:
+    --------------------
+    # OI functions #
+        - run_oi: run optimal interpolation (OI) mapping
+        - oi_grid: set up OI grid
+        - oi_param: create dataset of OI parameters
+        - oi_core: performs OI inner algorithm
     """
 
-    def __init__(self,obs_in=None,output=None,lonlat_minmax=None,time_minmax=None,dx=1.,dy=1.,dt=1.,simu_start_date=None):
-        """
-        ssh mapping attributes
-        
-        obs_in: array of observation paths
-        lonlat_minmax: domain [ min longitude, max longitude, min latitude, max latitude] 
-        time_minmax: domain [min,max] time
-        dx: zonal grid spatial step (in degree)
-        dy: meridional grid spatial step (in degree)
-        dt: temporal grid step 
-        simu_start_date: Nature run initial date
-        
-        """ 
-
+    def __init__(self,obs_in=None,output=None,lonlat_minmax=None,time_minmax=None,dx=1.,dy=1.,dt=1.,simu_start_date=None): 
+  
         # Observations
         self.obs_in = obs_in
         self.output_oi = output
@@ -46,16 +49,30 @@ class ssh_mapping:
         self.gtime = np.arange(self.time_min, self.time_max + self.dt, self.dt)        # output OI time grid
  
 
-        
+    #####
+    # OI functions
 
     def run_oi(self,Lx=1.,Ly=1.,Lt=7.,noise=0.05):
-        """
-        run oi mapping
+        """ 
+        Run optimal interpolation (OI) mapping algorithm. 
         
-        Lx: Zonal decorrelation scale (in degree)
-        Ly: Meridional decorrelation scale (in degree)
-        Lt: Temporal decorrelation scale (in days)
-        noise: Noise level (5%)
+        Parameters
+        ----------
+        
+        Returns
+        -------
+            
+        Notes
+        -----
+        The OI algorithm is a very commonly used mapping algorithm (e.g. for the DUACS-AVISO products) based on 
+        prior assumptions on temporal and spatial correlations (see for instance Le Traon and Dibarboure., 1999).
+        
+        References
+        ----------
+        Le Traon, P. Y., & Dibarboure, G. (1999). Mesoscale Mapping Capabilities of Multiple-Satellite Altimeter 
+        Missions, Journal of Atmospheric and Oceanic Technology, 16(9), 1208-1223. Retrieved Dec 8, 2020, from 
+        https://journals.ametsoc.org/view/journals/atot/16/9/1520-0426_1999_016_1208_mmcoms_2_0_co_2.xml
+        
         """
             
         # set OI param & grid
@@ -75,8 +92,17 @@ class ssh_mapping:
 
 
     def oi_grid(self,glon, glat, gtime, simu_start_date):
-        """
-
+        """ 
+        Set up OI grid
+        
+        Parameters
+        ----------
+        
+        Returns
+        -------
+        ds_oi_grid : Dataset
+            Grid used in the optimal interpolation. 
+        
         """
 
         logging.info('     Set OI grid...')
@@ -114,6 +140,23 @@ class ssh_mapping:
 
 
     def oi_param(self, Lx, Ly, Lt, noise):
+        """
+        Create dataset of OI parameters
+        
+        Parameters
+        ----------
+        Lx,Ly : scalar 
+            OI spatial correlation on the x- and y-axis respectively
+         
+        Lt: scalar 
+            OI temporal correlation 
+         
+        Returns
+        -------
+        ds_oi_param : Dataset
+            Dataset used to store and pass OI paramaters. 
+            
+        """
 
         logging.info('     Set OI params...')
 
@@ -126,6 +169,21 @@ class ssh_mapping:
 
 
     def oi_core(self,it, ds_oi_grid, ds_oi_param, ds_obs):
+        """ 
+        Performs OI inner algorithm
+        
+        Parameters
+        ----------
+        ds_oi_grid : Dataset
+            Grid used in the optimal interpolation.
+        ds_oi_param : Dataset
+            Dataset used to store and pass OI paramaters.
+        ds_obs : Dataset
+            Dataset of all available observations. 
+            
+        Returns
+        -------  
+        """
 
         ind1 = np.where((np.abs(ds_obs.time.values - ds_oi_grid.gtime.values[it]) < 2.*ds_oi_param.Lt.values))[0]
         nobs = len(ind1)
@@ -165,20 +223,34 @@ class ssh_mapping:
         ds_oi_grid.gssh[it, :, :] = sol.reshape(ds_oi_grid.lat.size, ds_oi_grid.lon.size)
         ds_oi_grid.nobs[it] = nobs
     
-            
-    def plot_mapping_outputs(self,crop1=0,crop2=-1,crop3=0,crop4=-1): 
-        """
-        plot reconstruction outputs
-        """
-        
-        import matplotlib.pyplot as plt
-        
-        # Plot Surface variables [SSH, SSD, SST]
-        print("Plotting surface variable")
-         
-                                                                  
+     
+
+#####
+# Other useful functions
 
 def read_obs(input_file, oi_grid, oi_param, simu_start_date, coarsening):
+    """ 
+    Read available observations (path given in input_file)
+
+    Parameters
+    ----------
+    input_file : array of strings 
+        Paths of all available observations
+    oi_grid : 
+        Grid used in the optimal interpolation.
+    oi_param : 
+        Dataset used to store and pass OI paramaters.
+    simu_start_date : string
+        Reference run initial date (e.g., '2012-10-01T00:00:00')
+    coarsening : Dictionary
+        Time to discard in the first and last few observation time steps (e.g., {'time': 5})
+
+    Returns
+    -------  
+    ds_obs : Dataset
+        Dataset of all available observations. 
+
+    """
     
     logging.info('     Reading observations...')
     
