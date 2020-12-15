@@ -1,6 +1,7 @@
-# or3d - 3D Ocean Reconstruction package
+# pydssa - Python developments for SWOT satellite analysis
 
-![Illustration](figures/or3d_illustration1.png)
+
+![Illustration](figures/pydssa_illustration1.png)
 
 This package contains codes and sample notebooks for downloading and processing the SSH mapping and vertical reconstruction tools.
 The examples can be run online using: "binder"
@@ -12,16 +13,16 @@ A set of example notebooks is provided (see below) for everyone to be able to st
 
 ## Installation 
 
-After cloning the or3d repository, install the package by typing in a terminal (from outside the or3d repository): 
+After cloning the pydssa repository, install the package by typing in a terminal (from outside the pydssa repository): 
 
 ```shell
-pip install -e /or3d/
+pip install -e pydssa/
 ```
 
-you can then import and use or3d as any python package
+you can then import and use pydssa as any python package
 
 ```python
-import or3d
+import pydssa
 ```
 
 ## Examples
@@ -46,7 +47,7 @@ The observation data are hosted [here](https://ige-meom-opendap.univ-grenoble-al
 
 ``` 
 
-and should be stored in 'or3D/data/SSH_obs/'.
+and should be stored in 'pydssa/data/SSH_obs/'.
 
 To start out download the *observation* dataset (dc_obs, 285M) using :
 
@@ -58,7 +59,7 @@ and then uncompress the files using tar -xvf <file>.tar.gz. You may also use ftp
 
 ### Run examples
 
-You can find the examples in 'or3d/data/examples/' or launch them directly from "binder".
+You can find the examples in 'pydssa/data/examples/' or launch them directly from "binder".
 
 
 ## Available methods
