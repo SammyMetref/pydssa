@@ -4,18 +4,20 @@
 
 ![Illustration](figures/pydssa_illustration1.png)
 
-This package contains codes and sample notebooks for downloading and processing the SSH mapping and vertical reconstruction tools.
-The examples can be run online using: "binder"
+<>This package contains codes and sample notebooks for downloading and processing the SSH mapping and vertical reconstruction tools.
+<>The examples can be run online using: "binder"
+
+The pydssa package is meant to be seen as a toolbox that should be shared and continuously developed by the oceanographic community. 
 
 ## Motivation
+ 
 
-The pydssa package is meant to be seen as a toolbox that should be shared and continuously developed by the oceanographic community.  
+The Surface Water and Ocean Topography (SWOT) satellite mission will launch in 2022 and should provide unprecedented two-dimensional sea surface height observations. In the first three months of data aquisition, SWOT will have a day-repeat fast sampling orbit. This Calibration and Validation (CalVal) phase will offer high temporal resolution data over several orbit crossing points: crossovers. The CalVal phase is a great opportunity for the science community to perform specific studies at fine temporal and spatial scales of oceanographic dynamics to improve our understanding of physical, biological and chemical processes. 
 
-The Surface Water and Ocean Topography (SWOT) satellite mission will launch in 2022 and should provide unprecedented two-dimensional sea surface height observations. In the first three months of data aquisition, will have a day-repeat fast sampling orbit. This Calibration and Validation (CalVal) phase will offer high temporal resolution data over several orbit crossing points: crossovers. This is a great opportunity for the science community to perform specific studies at fine temporal and spatial scales of oceanographic dynamics to improve our understanding of physical, biological and chemical processes. 
+In addition, during the CalVal phase, several in-situ experiments will be held in order to fully take advantage of the SWOT observations. The [Adopt-A-Crossover](https://www.clivar.org/news/swot-‘adopt-crossover’-consortium-has-been-endorsed-clivar) Consortium is responsible for implementing in-situ strategies and sampling of the fine-scale upper ocean processes in the different crossover regions (California Current, Western Pacific, Polar and Sub-polar regions and the Mediterranean). The pydssa package could be a useful toolbox to help the synergy between SWOT and in-situ observations. 
+For instance, pydssa has been used to illustrate in an observation system simulation experiment (OSSE) how to reconstruct ocean vertical quantities from SWOT data in the eSQG framework that had vertical stratification parameters calibrated with in-situ observations. 
 
-Also, during the CalVal phase several in-situ experiments will be held in order to fully take advantage of those satellite observations. The [Adopt-A-Crossover](https://www.clivar.org/news/swot-‘adopt-crossover’-consortium-has-been-endorsed-clivar) Consortium is responsible for implementing in-situ strategies and sampling of the fine-scale upper ocean processes in the different regions, such as California Current, Western Pacific, Polar and Sub-polar regions and the Mediterranean. The pydssa package could be a useful toolbox to help the synergy between SWOT and in-situ observations. 
-
-For instance, pydssa has been used to illustrate in an observation system simulation experiment (OSSE) how to reconstruct ocean vertical quantities from SWOT data in the eSQG framework that had vertical stratification parameters calibrated with in-situ observations.  
+<> The methods and codes present in this package are meant to evolve and adapt to different input observations. In anticipation of the SWOT CalVal missions, the ultimate goal of this package is to be ready to deal with real nadir and SWOT observations when they arrive and to be able to combine these altimetric observations with in situ observations in order to produce the best 3D ocean reconstructions.  
 
 A set of example notebooks is provided (see below) for everyone to be able to start and play as quickly as possible.
 
