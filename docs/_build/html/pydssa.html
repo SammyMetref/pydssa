@@ -1,0 +1,571 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pydssa package &mdash; pydssa 0.01 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'0.01',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pydssa" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pydssa
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.01
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pydssa</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pydssa package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pydssa.class_ssh_mapping">pydssa.class_ssh_mapping module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pydssa.class_vertical_reconstruction">pydssa.class_vertical_reconstruction module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pydssa">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pydssa</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">pydssa</a> &raquo;</li>
+        
+      <li>pydssa package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pydssa.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pydssa-package">
+<h1>pydssa package<a class="headerlink" href="#pydssa-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pydssa.class_ssh_mapping">
+<span id="pydssa-class-ssh-mapping-module"></span><h2>pydssa.class_ssh_mapping module<a class="headerlink" href="#module-pydssa.class_ssh_mapping" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pydssa.class_ssh_mapping.read_obs">
+<code class="descclassname">pydssa.class_ssh_mapping.</code><code class="descname">read_obs</code><span class="sig-paren">(</span><em>input_file</em>, <em>oi_grid</em>, <em>oi_param</em>, <em>simu_start_date</em>, <em>coarsening</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_ssh_mapping.read_obs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read available observations (path given in input_file).</p>
+<dl class="docutils">
+<dt>input_file <span class="classifier-delimiter">:</span> <span class="classifier">array of strings </span></dt>
+<dd>Paths of all available observations</dd>
+<dt>oi_grid <span class="classifier-delimiter">:</span> <span class="classifier"></span></dt>
+<dd>Grid used in the optimal interpolation.</dd>
+<dt>oi_param <span class="classifier-delimiter">:</span> <span class="classifier"></span></dt>
+<dd>Dataset used to store and pass OI paramaters.</dd>
+<dt>simu_start_date <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>Reference run initial date (e.g., ‘2012-10-01T00:00:00’)</dd>
+<dt>coarsening <span class="classifier-delimiter">:</span> <span class="classifier">Dictionary</span></dt>
+<dd>Time to discard in the first and last few observation time steps (e.g., {‘time’: 5})</dd>
+</dl>
+<dl class="docutils">
+<dt>ds_obs <span class="classifier-delimiter">:</span> <span class="classifier">Dataset</span></dt>
+<dd>Dataset of all available observations.</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="pydssa.class_ssh_mapping.ssh_mapping">
+<em class="property">class </em><code class="descclassname">pydssa.class_ssh_mapping.</code><code class="descname">ssh_mapping</code><span class="sig-paren">(</span><em>obs_in=None</em>, <em>output=None</em>, <em>lonlat_minmax=None</em>, <em>time_minmax=None</em>, <em>dx=1.0</em>, <em>dy=1.0</em>, <em>dt=1.0</em>, <em>simu_start_date=None</em>, <em>obsskiptime=2</em>, <em>obsskipac=2</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_ssh_mapping.ssh_mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Mapping of 2d SSH fields using nadir or SWOT observations</p>
+<dl class="docutils">
+<dt>obs_in: array of string</dt>
+<dd>Observation paths</dd>
+<dt>lonlat_minmax: array_like</dt>
+<dd>Domain borders [ min longitude, max longitude, min latitude, max latitude]</dd>
+<dt>time_minmax: array_like</dt>
+<dd>Domain [min,max] time</dd>
+<dt>dx: array_like (2D)</dt>
+<dd>Zonal grid spatial step (in degree)</dd>
+<dt>dy: array_like (2D)</dt>
+<dd>Meridional grid spatial step (in degree)</dd>
+<dt>dt: Numpy.timedelta64</dt>
+<dd>Temporal step</dd>
+<dt>simu_start_date: string</dt>
+<dd>Nature run initial date (e.g., ‘2012-10-01T00:00:00’)</dd>
+<dt>obsskiptime <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>Jump index in observation grid point in time, for a less accurate but speedier run.</dd>
+<dt>obsskipac <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>Jump index in observation grid point across track (SWOT), for a less accurate but speedier run.</dd>
+</dl>
+<dl class="docutils">
+<dt># OI functions #</dt>
+<dd><ul class="first last simple">
+<li>run_oi: run optimal interpolation (OI) mapping</li>
+<li>oi_grid: set up OI grid</li>
+<li>oi_param: create dataset of OI parameters</li>
+<li>oi_core: performs OI inner algorithm</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pydssa.class_ssh_mapping.ssh_mapping.oi_core">
+<code class="descname">oi_core</code><span class="sig-paren">(</span><em>it</em>, <em>ds_oi_grid</em>, <em>ds_oi_param</em>, <em>ds_obs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_ssh_mapping.ssh_mapping.oi_core" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs OI inner algorithm.</p>
+<p>oi_core uses the pre-generated Datasets ds_oi_grid, ds_oi_param and ds_obs along with self.obsskiptime and
+self.obsskipac (for SWOT) to compute the ssh and update its value in ds_oi_grid.</p>
+<dl class="docutils">
+<dt>ds_oi_grid <span class="classifier-delimiter">:</span> <span class="classifier">Dataset</span></dt>
+<dd>Grid used in the optimal interpolation.</dd>
+<dt>ds_oi_param <span class="classifier-delimiter">:</span> <span class="classifier">Dataset</span></dt>
+<dd>Dataset used to store and pass OI paramaters.</dd>
+<dt>ds_obs <span class="classifier-delimiter">:</span> <span class="classifier">Dataset</span></dt>
+<dd>Dataset of all available observations.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydssa.class_ssh_mapping.ssh_mapping.oi_grid">
+<code class="descname">oi_grid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_ssh_mapping.ssh_mapping.oi_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up OI grid.</p>
+<p>oi_grid uses self.glon, self.glat, self.gtime, self.simu_start_date to create an OI grid returned as ds_oi_grid.</p>
+<dl class="docutils">
+<dt>ds_oi_grid <span class="classifier-delimiter">:</span> <span class="classifier">Dataset</span></dt>
+<dd>Grid used in the optimal interpolation.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydssa.class_ssh_mapping.ssh_mapping.oi_param">
+<code class="descname">oi_param</code><span class="sig-paren">(</span><em>Lx</em>, <em>Ly</em>, <em>Lt</em>, <em>noise</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_ssh_mapping.ssh_mapping.oi_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create dataset of OI parameters</p>
+<dl class="docutils">
+<dt>Lx,Ly <span class="classifier-delimiter">:</span> <span class="classifier">scalar </span></dt>
+<dd>OI spatial correlation on the x- and y-axis respectively</dd>
+<dt>Lt: scalar </dt>
+<dd>OI temporal correlation</dd>
+</dl>
+<dl class="docutils">
+<dt>ds_oi_param <span class="classifier-delimiter">:</span> <span class="classifier">Dataset</span></dt>
+<dd>Dataset used to store and pass OI paramaters.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydssa.class_ssh_mapping.ssh_mapping.run_oi">
+<code class="descname">run_oi</code><span class="sig-paren">(</span><em>Lx=1.0</em>, <em>Ly=1.0</em>, <em>Lt=7.0</em>, <em>noise=0.05</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_ssh_mapping.ssh_mapping.run_oi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run optimal interpolation (OI) mapping algorithm.</p>
+<p>When finished, run_oi uses Dataset.to_netcdf function to create a netcdf file stored in self.output_oi.</p>
+<dl class="docutils">
+<dt>Lx,Ly <span class="classifier-delimiter">:</span> <span class="classifier">scalar </span></dt>
+<dd>OI spatial correlation on the x- and y-axis respectively</dd>
+<dt>Lt: scalar </dt>
+<dd>OI temporal correlation</dd>
+</dl>
+<p>The OI algorithm is a very commonly used mapping algorithm (e.g. for the DUACS-AVISO products) based on 
+prior assumptions on temporal and spatial correlations (see for instance Le Traon and Dibarboure., 1999).</p>
+<p>Le Traon, P. Y., &amp; Dibarboure, G. (1999). Mesoscale Mapping Capabilities of Multiple-Satellite Altimeter 
+Missions, Journal of Atmospheric and Oceanic Technology, 16(9), 1208-1223. Retrieved Dec 8, 2020, from 
+<a class="reference external" href="https://journals.ametsoc.org/view/journals/atot/16/9/1520-0426_1999_016_1208_mmcoms_2_0_co_2.xml">https://journals.ametsoc.org/view/journals/atot/16/9/1520-0426_1999_016_1208_mmcoms_2_0_co_2.xml</a></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydssa.class_vertical_reconstruction">
+<span id="pydssa-class-vertical-reconstruction-module"></span><h2>pydssa.class_vertical_reconstruction module<a class="headerlink" href="#module-pydssa.class_vertical_reconstruction" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pydssa.class_vertical_reconstruction.ana_gaspari_cohn">
+<code class="descclassname">pydssa.class_vertical_reconstruction.</code><code class="descname">ana_gaspari_cohn</code><span class="sig-paren">(</span><em>r</em>, <em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.ana_gaspari_cohn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gaspari-Cohn function</p>
+<dl class="docutils">
+<dt>r <span class="classifier-delimiter">:</span> <span class="classifier">array_like </span></dt>
+<dd>Array to which the Gaspari-Cohn function will be applied to</dd>
+<dt>c <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span></dt>
+<dd>Distance above which the return values are zeros</dd>
+</dl>
+<dl class="docutils">
+<dt>gp <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Resulting array of the Gaspari-Cohn function applied to r</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydssa.class_vertical_reconstruction.compute_dxdy">
+<code class="descclassname">pydssa.class_vertical_reconstruction.</code><code class="descname">compute_dxdy</code><span class="sig-paren">(</span><em>field</em>, <em>lon</em>, <em>lat</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.compute_dxdy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return x- and y-axis increments in meters.</p>
+<dl class="docutils">
+<dt>t_field <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>A horizontal field of same shape as lon an lat.</dd>
+<dt>lon, lat <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>The arrays containing longitude and latitude in degrees.</dd>
+</dl>
+<dl class="docutils">
+<dt>dx <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Zonal increments in meters.</dd>
+<dt>dy <span class="classifier-delimiter">:</span> <span class="classifier">array_like </span></dt>
+<dd>Meridional increments in meters.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydssa.class_vertical_reconstruction.gradT">
+<code class="descclassname">pydssa.class_vertical_reconstruction.</code><code class="descname">gradT</code><span class="sig-paren">(</span><em>t_field</em>, <em>dx</em>, <em>dy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.gradT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return gradient of t_fields computed on the center of a cell c-grid.</p>
+<dl class="docutils">
+<dt>t_field <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>A horizontal field of same shape as dx an dy.</dd>
+<dt>dx, dy <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>The arrays containing the x- and y-axis increments in meters.</dd>
+</dl>
+<dl class="docutils">
+<dt>gradT_x <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Zonal gradient.</dd>
+<dt>gradT_y <span class="classifier-delimiter">:</span> <span class="classifier">array_like </span></dt>
+<dd>Meridional gradient.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydssa.class_vertical_reconstruction.jacobian">
+<code class="descclassname">pydssa.class_vertical_reconstruction.</code><code class="descname">jacobian</code><span class="sig-paren">(</span><em>aa</em>, <em>bb</em>, <em>dx</em>, <em>dy</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.jacobian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the jacobian J(aa,bb) of two matrices aa and bb in function of x and y</p>
+<dl class="docutils">
+<dt>aa,bb <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>ssh field to smooth the borders</dd>
+<dt>dx, dy <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>The arrays containing the x- and y-axis increments in meters.</dd>
+</dl>
+<dl class="docutils">
+<dt>jacob <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>jacobian</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydssa.class_vertical_reconstruction.smooth_border_domain">
+<code class="descclassname">pydssa.class_vertical_reconstruction.</code><code class="descname">smooth_border_domain</code><span class="sig-paren">(</span><em>field</em>, <em>bordersize=30</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.smooth_border_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Field smoother to periodic at border of the domain</p>
+<dl class="docutils">
+<dt>field <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>field to smooth the borders</dd>
+<dt>bordersize <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span></dt>
+<dd>Distance from border above where smoothing is performed</dd>
+</dl>
+<dl class="docutils">
+<dt>field_smoothed <span class="classifier-delimiter">:</span> <span class="classifier">array_like  </span></dt>
+<dd>field with smooth borders</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydssa.class_vertical_reconstruction.ssh2uv">
+<code class="descclassname">pydssa.class_vertical_reconstruction.</code><code class="descname">ssh2uv</code><span class="sig-paren">(</span><em>ssh</em>, <em>dx</em>, <em>dy</em>, <em>f0</em>, <em>g</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.ssh2uv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute geostrophic u,v from ssh.</p>
+<dl class="docutils">
+<dt>t_field <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>A horizontal sea surface height field of same shape as dx an dy.</dd>
+<dt>dx, dy <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>The arrays containing the x- and y-axis increments in meters.</dd>
+<dt>f0 <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>The Coriolis parameter field (previously computed at the right longitude and latitude).</dd>
+<dt>g <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span></dt>
+<dd>Gravity constant.</dd>
+</dl>
+<dl class="docutils">
+<dt>u <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Zonal velocity.</dd>
+<dt>v <span class="classifier-delimiter">:</span> <span class="classifier">array_like </span></dt>
+<dd>Meridional velocity.</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="pydssa.class_vertical_reconstruction.vertical_reconstruction">
+<em class="property">class </em><code class="descclassname">pydssa.class_vertical_reconstruction.</code><code class="descname">vertical_reconstruction</code><span class="sig-paren">(</span><em>ssh=None</em>, <em>sst=None</em>, <em>lon=None</em>, <em>lat=None</em>, <em>z=None</em>, <em>N0=None</em>, <em>C=1.0</em>, <em>sppad=1</em>, <em>Nprofile=None</em>, <em>periodsmooth=30</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.vertical_reconstruction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Reconstruction of ocean 3d fields using surface maps.</p>
+<p>ssh:   sea surface height (needed for esqg and geo. kinematic deformation)     
+sst:   sea surface temperature (needed for geo. kinematic deformation)
+lon:   longitude  
+lat:   latitudes  
+z:     vertical levels
+N0:    effective buoyancy  
+C:     SQG ratio between SST and SSH
+sppad: proportional spectral padding coefficient
+Nprofile: vertical profile of N0</p>
+<dl class="docutils">
+<dt># eSQG functions #</dt>
+<dd><ul class="first last simple">
+<li>init_esqg: initialize vertical reconstruction attributes</li>
+<li>init_esqg_spectral_space: initialize arrays for esqg reconstruction</li>
+<li>run_esqg: run esqg reconstruction</li>
+</ul>
+</dd>
+<dt># Omega kinematic deformation functions #</dt>
+<dd><ul class="first last simple">
+<li>init_geokindef: initialize arrays for geostrophic kinematic deformation reconstruction</li>
+<li>run_geokindef: run geostrophic kinematic deformation reconstruction at the surface</li>
+</ul>
+</dd>
+<dt># Plot functions #</dt>
+<dd><ul class="first last simple">
+<li>plot_reconstruction_outputs: plot surface and 3D reconstruction outputs</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pydssa.class_vertical_reconstruction.vertical_reconstruction.init_esqg">
+<code class="descname">init_esqg</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.vertical_reconstruction.init_esqg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize arrays for esqg reconstruction.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydssa.class_vertical_reconstruction.vertical_reconstruction.init_esqg_spectral_space">
+<code class="descname">init_esqg_spectral_space</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.vertical_reconstruction.init_esqg_spectral_space" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize spectral space and arrays for esqg reconstruction.</p>
+<p>init_esqg_spectral_space uses self.ssha and the problem dimensions to initialize the spectral arrays and 
+parameters. The size of the spectral problem is the size of the space problem multiplied by self.sp_pad so 
+that the number of frequencies computed is larger and the solution is smoother (although, computation time 
+increases).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydssa.class_vertical_reconstruction.vertical_reconstruction.init_geokindef">
+<code class="descname">init_geokindef</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.vertical_reconstruction.init_geokindef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize arrays for geostrophic kinematic deformation reconstruction</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydssa.class_vertical_reconstruction.vertical_reconstruction.plot_reconstruction_outputs">
+<code class="descname">plot_reconstruction_outputs</code><span class="sig-paren">(</span><em>crop1=0</em>, <em>crop2=-1</em>, <em>crop3=0</em>, <em>crop4=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.vertical_reconstruction.plot_reconstruction_outputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Surface and 3D reconstruction output plots</p>
+<dl class="docutils">
+<dt>crop1,crop2 <span class="classifier-delimiter">:</span> <span class="classifier">int </span></dt>
+<dd>First and last indices on the x-axis for a zoomed plot.</dd>
+<dt>crop3,crop4 <span class="classifier-delimiter">:</span> <span class="classifier">int </span></dt>
+<dd>First and last indices on the y-axis for a zoomed plot</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydssa.class_vertical_reconstruction.vertical_reconstruction.run_esqg">
+<code class="descname">run_esqg</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.vertical_reconstruction.run_esqg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run effective surface quasigeostrophic (eSQG) framework reconstruction.</p>
+<p>The effective surface quasigeostrophic (eSQG) framework only uses information on the sea surface height and
+deduce the subinertial, balanced streamfunction, relative vorticity, buoyancy and vertical velocity. The 
+surface information is also reconstructed on the vertical by using an effective buoyancy frequency and by
+assuming that the surface and the vertical are related and that their relationship is wavenumber dependent 
+(see Qiu et al., 2020). Therefore, the computation is performed in the spectral space throughout.</p>
+<p>Qiu, B., Chen, S., Klein, P., Torres, H., Wang, J., Fu, L., &amp; Menemenlis, D. (2020). Reconstructing Upper-
+Ocean Vertical Velocity Field from Sea Surface Height in the Presence of Unbalanced Motion, Journal of 
+Physical Oceanography, 50(1), 55-79. Retrieved Dec 8, 2020, from
+<a class="reference external" href="https://journals.ametsoc.org/view/journals/phoc/50/1/jpo-d-19-0172.1.xml">https://journals.ametsoc.org/view/journals/phoc/50/1/jpo-d-19-0172.1.xml</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydssa.class_vertical_reconstruction.vertical_reconstruction.run_geokindef">
+<code class="descname">run_geokindef</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.vertical_reconstruction.run_geokindef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run geostrophic kinematic deformation reconstruction at the surface.</p>
+<p>The geostrophic kinematic deformation reconstruction is part of the omega equation forcing and is also known 
+as the QG Q vector or the frontogenesis vector (see Qiu et al., 2020 ; Hoskins et al., 1978)</p>
+<p>Qiu, B., Chen, S., Klein, P., Torres, H., Wang, J., Fu, L., &amp; Menemenlis, D. (2020). Reconstructing Upper-
+Ocean Vertical Velocity Field from Sea Surface Height in the Presence of Unbalanced Motion, Journal of 
+Physical Oceanography, 50(1), 55-79. Retrieved Dec 8, 2020, from
+<a class="reference external" href="https://journals.ametsoc.org/view/journals/phoc/50/1/jpo-d-19-0172.1.xml">https://journals.ametsoc.org/view/journals/phoc/50/1/jpo-d-19-0172.1.xml</a></p>
+<p>Hoskins, B.J., Draghici, I. and Davies, H.C. (1978), A new look at the ω‐equation. Q.J.R. Meteorol. Soc., 
+104: 31-38. <a class="reference external" href="https://doi.org/10.1002/qj.49710443903">https://doi.org/10.1002/qj.49710443903</a></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydssa">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pydssa" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="pydssa" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Sammy Metref
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
