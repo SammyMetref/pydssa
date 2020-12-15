@@ -7,7 +7,7 @@
 <!---This package contains codes and sample notebooks for downloading and processing the SSH mapping and vertical reconstruction tools.
 The examples can be run online using: "binder"--->
 
-The pydssa package is meant to be seen as a toolbox that should be shared and continuously developed by the oceanographic community. 
+The pydssa package is meant to be approached as a toolbox that should be shared and continuously developed by the oceanographic community. 
 
 ## Motivation
  
