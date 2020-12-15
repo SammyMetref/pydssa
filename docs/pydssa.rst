@@ -1,9 +1,6 @@
 pydssa package
 ==============
 
-Submodules
-----------
-
 pydssa\.class\_ssh\_mapping module
 ----------------------------------
 
@@ -21,10 +18,3 @@ pydssa\.class\_vertical\_reconstruction module
     :show-inheritance:
 
 
-Module contents
----------------
-
-.. automodule:: pydssa
-    :members:
-    :undoc-members:
-    :show-inheritance:
