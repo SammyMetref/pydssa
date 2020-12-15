@@ -1,4 +1,5 @@
-# pydssa - Python developments for SWOT satellite analysis
+# pydssa 
+## Python developments for SWOT satellite analysis
 
 
 ![Illustration](figures/pydssa_illustration1.png)
