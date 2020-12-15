@@ -8,7 +8,7 @@ class ssh_mapping:
      
     Requirement of initialization:
     ------------------------------ 
-    obs_in: array of string
+    obs_in: array of strings
         Observation paths
     lonlat_minmax: array_like
         Domain borders [ min longitude, max longitude, min latitude, max latitude] 
@@ -29,7 +29,7 @@ class ssh_mapping:
     
     Available functions:
     --------------------
-    # OI functions #
+    OI functions 
         - run_oi: run optimal interpolation (OI) mapping
         - oi_grid: set up OI grid
         - oi_param: create dataset of OI parameters

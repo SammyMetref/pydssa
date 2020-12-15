@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pydssa package &mdash; pydssa 0.01 documentation</title>
+  <title>pydssa package &mdash; Pydssa 0.01 documentation</title>
   
 
   
@@ -45,6 +45,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="setup module" href="setup.html" />
     <link rel="prev" title="pydssa" href="modules.html" /> 
 </head>
 
@@ -59,7 +60,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pydssa
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Pydssa
           
 
           
@@ -104,6 +105,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-pydssa">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup module</a></li>
 </ul>
 </li>
 </ul>
@@ -121,7 +123,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">pydssa</a>
+          <a href="index.html">Pydssa</a>
         
       </nav>
 
@@ -208,7 +210,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Mapping of 2d SSH fields using nadir or SWOT observations</p>
 <dl class="docutils">
-<dt>obs_in: array of string</dt>
+<dt>obs_in: array of strings</dt>
 <dd>Observation paths</dd>
 <dt>lonlat_minmax: array_like</dt>
 <dd>Domain borders [ min longitude, max longitude, min latitude, max latitude]</dd>
@@ -228,7 +230,7 @@
 <dd>Jump index in observation grid point across track (SWOT), for a less accurate but speedier run.</dd>
 </dl>
 <dl class="docutils">
-<dt># OI functions #</dt>
+<dt>OI functions </dt>
 <dd><ul class="first last simple">
 <li>run_oi: run optimal interpolation (OI) mapping</li>
 <li>oi_grid: set up OI grid</li>
@@ -414,30 +416,41 @@ Missions, Journal of Atmospheric and Oceanic Technology, 16(9), 1208-1223. Retri
 <em class="property">class </em><code class="descclassname">pydssa.class_vertical_reconstruction.</code><code class="descname">vertical_reconstruction</code><span class="sig-paren">(</span><em>ssh=None</em>, <em>sst=None</em>, <em>lon=None</em>, <em>lat=None</em>, <em>z=None</em>, <em>N0=None</em>, <em>C=1.0</em>, <em>sppad=1</em>, <em>Nprofile=None</em>, <em>periodsmooth=30</em><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.vertical_reconstruction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Reconstruction of ocean 3d fields using surface maps.</p>
-<p>ssh:   sea surface height (needed for esqg and geo. kinematic deformation)     
-sst:   sea surface temperature (needed for geo. kinematic deformation)
-lon:   longitude  
-lat:   latitudes  
-z:     vertical levels
-N0:    effective buoyancy  
-C:     SQG ratio between SST and SSH
-sppad: proportional spectral padding coefficient
-Nprofile: vertical profile of N0</p>
 <dl class="docutils">
-<dt># eSQG functions #</dt>
+<dt>ssh: array_like (2D)</dt>
+<dd>Sea surface height (needed for esqg and geo. kinematic deformation).</dd>
+<dt>sst: array_like (2D)</dt>
+<dd>Sea surface temperature (needed for geo. kinematic deformation).</dd>
+<dt>lon: array_like (2D)</dt>
+<dd>Longitude (in degrees).</dd>
+<dt>lat:array_like (2D)</dt>
+<dd>Latitudes (in degrees).</dd>
+<dt>z: array_like (1D)</dt>
+<dd>Vertical levels (in meters).</dd>
+<dt>N0: array_like (2D)</dt>
+<dd>Effective buoyancy.</dd>
+<dt>C: float</dt>
+<dd>SQG ratio between SST and SSH.</dd>
+<dt>sppad: int</dt>
+<dd>Proportional spectral padding coefficient.</dd>
+<dt>Nprofile: array_like (1D)</dt>
+<dd>Vertical profile of N0.</dd>
+</dl>
+<dl class="docutils">
+<dt>eSQG functions</dt>
 <dd><ul class="first last simple">
 <li>init_esqg: initialize vertical reconstruction attributes</li>
 <li>init_esqg_spectral_space: initialize arrays for esqg reconstruction</li>
 <li>run_esqg: run esqg reconstruction</li>
 </ul>
 </dd>
-<dt># Omega kinematic deformation functions #</dt>
+<dt>Omega kinematic deformation functions</dt>
 <dd><ul class="first last simple">
 <li>init_geokindef: initialize arrays for geostrophic kinematic deformation reconstruction</li>
 <li>run_geokindef: run geostrophic kinematic deformation reconstruction at the surface</li>
 </ul>
 </dd>
-<dt># Plot functions #</dt>
+<dt>Plot functions</dt>
 <dd><ul class="first last simple">
 <li>plot_reconstruction_outputs: plot surface and 3D reconstruction outputs</li>
 </ul>
@@ -447,6 +460,8 @@ Nprofile: vertical profile of N0</p>
 <dt id="pydssa.class_vertical_reconstruction.vertical_reconstruction.init_esqg">
 <code class="descname">init_esqg</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydssa.class_vertical_reconstruction.vertical_reconstruction.init_esqg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize arrays for esqg reconstruction.</p>
+<p>init_esqg uses self.ssh to set the problem dimensions, compute the SSH anomaly (self.ssha) and initializes 
+the output arrays (self.psi, self.relvort, self.relvort_norm, self.buoy, self.vertvel, self.corr_surf).</p>
 </dd></dl>
 
 <dl class="method">
@@ -521,6 +536,8 @@ Physical Oceanography, 50(1), 55-79. Retrieved Dec 8, 2020, from
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="setup.html" class="btn btn-neutral float-right" title="setup module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="modules.html" class="btn btn-neutral float-left" title="pydssa" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

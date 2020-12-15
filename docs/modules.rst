@@ -5,3 +5,4 @@ pydssa
    :maxdepth: 4
 
    pydssa
+   setup

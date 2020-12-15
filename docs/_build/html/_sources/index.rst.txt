@@ -1,13 +1,13 @@
-.. pydssa documentation master file, created by
-   sphinx-quickstart on Tue Dec 15 14:31:34 2020.
+.. Pydssa documentation master file, created by
+   sphinx-quickstart on Tue Dec 15 15:23:50 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pydssa's documentation!
+Welcome to Pydssa's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Contents:
 
    modules

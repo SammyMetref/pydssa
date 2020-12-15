@@ -6,26 +6,35 @@ class vertical_reconstruction:
     
     Requirement of initialization:
     ------------------------------
-    ssh:   sea surface height (needed for esqg and geo. kinematic deformation)     
-    sst:   sea surface temperature (needed for geo. kinematic deformation)
-    lon:   longitude  
-    lat:   latitudes  
-    z:     vertical levels
-    N0:    effective buoyancy  
-    C:     SQG ratio between SST and SSH
-    sppad: proportional spectral padding coefficient
-    Nprofile: vertical profile of N0 
+    ssh: array_like (2D)
+        Sea surface height (needed for esqg and geo. kinematic deformation).    
+    sst: array_like (2D)
+        Sea surface temperature (needed for geo. kinematic deformation).
+    lon: array_like (2D)
+        Longitude (in degrees).
+    lat:array_like (2D)
+        Latitudes (in degrees). 
+    z: array_like (1D)
+        Vertical levels (in meters).
+    N0: array_like (2D)
+        Effective buoyancy.
+    C: float
+        SQG ratio between SST and SSH.
+    sppad: int
+        Proportional spectral padding coefficient.
+    Nprofile: array_like (1D)
+        Vertical profile of N0.
     
     Available functions:
     --------------------
-    # eSQG functions #
+    eSQG functions
         - init_esqg: initialize vertical reconstruction attributes
         - init_esqg_spectral_space: initialize arrays for esqg reconstruction
         - run_esqg: run esqg reconstruction
-    # Omega kinematic deformation functions #
+    Omega kinematic deformation functions
         - init_geokindef: initialize arrays for geostrophic kinematic deformation reconstruction
         - run_geokindef: run geostrophic kinematic deformation reconstruction at the surface
-    # Plot functions #
+    Plot functions
         - plot_reconstruction_outputs: plot surface and 3D reconstruction outputs
     """
 
@@ -53,6 +62,9 @@ class vertical_reconstruction:
     def init_esqg(self):
         """
         Initialize arrays for esqg reconstruction. 
+        
+        init_esqg uses self.ssh to set the problem dimensions, compute the SSH anomaly (self.ssha) and initializes 
+        the output arrays (self.psi, self.relvort, self.relvort_norm, self.buoy, self.vertvel, self.corr_surf). 
         
         Parameters
         ----------
