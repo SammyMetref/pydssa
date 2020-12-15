@@ -95,6 +95,11 @@ class vertical_reconstruction:
         """
         Initialize spectral space and arrays for esqg reconstruction. 
         
+        init_esqg_spectral_space uses self.ssha and the problem dimensions to initialize the spectral arrays and 
+        parameters. The size of the spectral problem is the size of the space problem multiplied by self.sp_pad so 
+        that the number of frequencies computed is larger and the solution is smoother (although, computation time 
+        increases).
+        
         Parameters
         ----------
         

@@ -22,6 +22,10 @@ class ssh_mapping:
         Temporal step 
     simu_start_date: string
         Nature run initial date (e.g., '2012-10-01T00:00:00')
+    obsskiptime : int
+        Jump index in observation grid point in time, for a less accurate but speedier run.
+    obsskipac : int
+        Jump index in observation grid point across track (SWOT), for a less accurate but speedier run.
     
     Available functions:
     --------------------
@@ -64,6 +68,8 @@ class ssh_mapping:
     def run_oi(self,Lx=1.,Ly=1.,Lt=7.,noise=0.05):
         """ 
         Run optimal interpolation (OI) mapping algorithm. 
+        
+        When finished, run_oi uses Dataset.to_netcdf function to create a netcdf file stored in self.output_oi.
           
         Parameters
         ----------
@@ -107,7 +113,9 @@ class ssh_mapping:
 
     def oi_grid(self):
         """ 
-        Set up OI grid
+        Set up OI grid.
+        
+        oi_grid uses self.glon, self.glat, self.gtime, self.simu_start_date to create an OI grid returned as ds_oi_grid.
          
         Parameters
         ----------
@@ -184,7 +192,10 @@ class ssh_mapping:
 
     def oi_core(self,it, ds_oi_grid, ds_oi_param, ds_obs):
         """ 
-        Performs OI inner algorithm
+        Performs OI inner algorithm.
+        
+        oi_core uses the pre-generated Datasets ds_oi_grid, ds_oi_param and ds_obs along with self.obsskiptime and
+        self.obsskipac (for SWOT) to compute the ssh and update its value in ds_oi_grid. 
         
         Parameters
         ----------
@@ -278,7 +289,7 @@ class ssh_mapping:
 
 def read_obs(input_file, oi_grid, oi_param, simu_start_date, coarsening):
     """ 
-    Read available observations (path given in input_file)
+    Read available observations (path given in input_file).
 
     Parameters
     ----------
