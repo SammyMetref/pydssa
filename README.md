@@ -35,6 +35,10 @@ you can then import and use pydssa as any python package
 import pydssa
 ```
 
+## Documentation 
+
+Documentation is stored in pydssa/docs/ and is available online [here](http://htmlpreview.github.io/?https://github.com/SammyMetref/pydssa/blob/master/docs/_build/html/index.html).
+
 ## Examples
 
 ### Download the example data
