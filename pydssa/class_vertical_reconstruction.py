@@ -93,14 +93,15 @@ class vertical_reconstruction:
         
         # Compute surface anomaly maps
         self.ssha =ssh_smoothed - ssh_smoothed.mean()                  # Filter a priori ? nd.gaussian_filter( ,0.5)  
+        self.ssha[self.ssh == 0] = 0
         
         # Initialize arrays
-        self.psi = np.zeros([self.nx,self.ny,self.nz])
-        self.relvort = np.zeros([self.nx,self.ny,self.nz])
-        self.relvort_norm = np.zeros([self.nx,self.ny,self.nz])
-        self.buoy = np.zeros([self.nx,self.ny,self.nz])
-        self.vertvel = np.zeros([self.nx,self.ny,self.nz])
-        self.corr_surf = np.zeros([self.nz]) 
+        self.psi = np.ma.masked_array(np.zeros([self.nx,self.ny,self.nz]))
+        self.relvort = np.ma.masked_array(np.zeros([self.nx,self.ny,self.nz]))
+        self.relvort_norm = np.ma.masked_array(np.zeros([self.nx,self.ny,self.nz]))
+        self.buoy = np.ma.masked_array(np.zeros([self.nx,self.ny,self.nz]))
+        self.vertvel = np.ma.masked_array(np.zeros([self.nx,self.ny,self.nz]))
+        self.corr_surf = np.ma.masked_array(np.zeros([self.nz]) )
         
         
     def init_esqg_spectral_space(self):
@@ -122,17 +123,80 @@ class vertical_reconstruction:
         import scipy.fftpack as fft # Check xfft (parallelisable)
         
         # Compute Fourier transform 
-        self.ssha_hat = fft.fft2(self.ssha,[self.sp_pad*self.nx,self.sp_pad*self.ny]) 
+        periodic_spec = False
+        
+        if periodic_spec:
+            ssh_period = np.zeros((self.nx*3,self.ny*3))
 
-        # Problem size in Fourier space
-        self.skx = np.shape(self.ssha_hat)[0]
-        self.sky = np.shape(self.ssha_hat)[1]
+            ssh_period[self.nx:2*self.nx,self.ny:2*self.ny] = self.ssha 
+            ssh_period[:self.nx,self.ny:2*self.ny] = self.ssha[::-1,:]
+            ssh_period[2*self.nx:,self.ny:2*self.ny] = self.ssha[::-1,:]
+            ssh_period[self.nx:2*self.nx,:self.ny] = self.ssha[:,::-1]
+            ssh_period[self.nx:2*self.nx,2*self.ny:] = self.ssha[:,::-1]
+            ssh_period[:self.nx,:self.ny] = self.ssha[::-1,::-1]
+            ssh_period[:self.nx,2*self.ny:] = self.ssha[::-1,::-1]
+            ssh_period[2*self.nx:,:self.ny] = self.ssha[::-1,::-1]
+            ssh_period[2*self.nx:,2*self.ny:] = self.ssha[::-1,::-1]
+
+            ssh_period = np.delete(ssh_period, 2*self.nx, 0)
+            ssh_period = np.delete(ssh_period, self.nx-1, 0)
+            ssh_period = np.delete(ssh_period, 2*self.ny, 1)
+            ssh_period = np.delete(ssh_period, self.ny-1, 1)
 
 
-        self.f0_hat = np.ones([self.skx,self.sky])*self.f0.mean()
-        self.f0_hat[:self.nx,:self.ny] = self.f0
-        self.N0_hat = np.ones([self.skx,self.sky])*self.N0.mean()
-        self.N0_hat[:self.nx,:self.ny] = self.N0
+            self.ssha_hat = fft.fft2(ssh_period)  
+            
+            # Problem size in Fourier space
+            self.skx = np.shape(self.ssha_hat)[0]
+            self.sky = np.shape(self.ssha_hat)[1]
+
+            self.f0_hat = np.zeros((self.nx*3,self.ny*3))
+        
+            self.f0_hat[self.nx:2*self.nx,self.ny:2*self.ny] = self.f0 
+            self.f0_hat[:self.nx,self.ny:2*self.ny] = self.f0[::-1,:]
+            self.f0_hat[2*self.nx:,self.ny:2*self.ny] = self.f0[::-1,:]
+            self.f0_hat[self.nx:2*self.nx,:self.ny] = self.f0[:,::-1]
+            self.f0_hat[self.nx:2*self.nx,2*self.ny:] = self.f0[:,::-1]
+            self.f0_hat[:self.nx,:self.ny] = self.f0[::-1,::-1]
+            self.f0_hat[:self.nx,2*self.ny:] = self.f0[::-1,::-1]
+            self.f0_hat[2*self.nx:,:self.ny] = self.f0[::-1,::-1]
+            self.f0_hat[2*self.nx:,2*self.ny:] = self.f0[::-1,::-1]
+        
+            self.f0_hat = np.delete(self.f0_hat, 2*self.nx, 0)
+            self.f0_hat = np.delete(self.f0_hat, self.nx-1, 0)
+            self.f0_hat = np.delete(self.f0_hat, 2*self.ny, 1)
+            self.f0_hat = np.delete(self.f0_hat, self.ny-1, 1)
+            
+            self.N0_hat = np.zeros((self.nx*3,self.ny*3))
+
+            self.N0_hat[self.nx:2*self.nx,self.ny:2*self.ny] = self.N0 
+            self.N0_hat[:self.nx,self.ny:2*self.ny] = self.N0[::-1,:]
+            self.N0_hat[2*self.nx:,self.ny:2*self.ny] = self.N0[::-1,:]
+            self.N0_hat[self.nx:2*self.nx,:self.ny] = self.N0[:,::-1]
+            self.N0_hat[self.nx:2*self.nx,2*self.ny:] = self.N0[:,::-1]
+            self.N0_hat[:self.nx,:self.ny] = self.N0[::-1,::-1]
+            self.N0_hat[:self.nx,2*self.ny:] = self.N0[::-1,::-1]
+            self.N0_hat[2*self.nx:,:self.ny] = self.N0[::-1,::-1]
+            self.N0_hat[2*self.nx:,2*self.ny:] = self.N0[::-1,::-1]
+
+            self.N0_hat = np.delete(self.N0_hat, 2*self.nx, 0)
+            self.N0_hat = np.delete(self.N0_hat, self.nx-1, 0)
+            self.N0_hat = np.delete(self.N0_hat, 2*self.ny, 1)
+            self.N0_hat = np.delete(self.N0_hat, self.ny-1, 1)
+        else:
+            
+            self.ssha_hat = fft.fft2(self.ssha,[self.sp_pad*self.nx,self.sp_pad*self.ny]) 
+            
+            # Problem size in Fourier space
+            self.skx = np.shape(self.ssha_hat)[0]
+            self.sky = np.shape(self.ssha_hat)[1]
+            
+            self.f0_hat = np.ones([self.skx,self.sky])*self.f0.mean()
+            self.f0_hat[:self.nx,:self.ny] = self.f0
+        
+            self.N0_hat = np.ones([self.skx,self.sky])*self.N0.mean()
+            self.N0_hat[:self.nx,:self.ny] = self.N0
+        
 
         # Initialize N on the vertical 
         if self.Nprofile is None: 
@@ -186,6 +250,7 @@ class vertical_reconstruction:
         """
 
         import scipy.fftpack as fft
+        import scipy.ndimage as nd
 
         # Initialize esqg 
         self.init_esqg()
@@ -193,46 +258,152 @@ class vertical_reconstruction:
         # Initialize spectral space
         self.init_esqg_spectral_space()
         
+        gaussian_filter = 1
+        keep_fraction = 0.15
+        
+        periodic_spec = False
+          
         
         # Loop on the vertical
         for iz in range(self.nz): 
             # Compute the streamfunction in Fourier space
+            print(str(self.z[iz])+' (m)')
             corr_surf0 = np.exp(self.N[:,:,iz]/self.f0_hat*self.k_h*self.z[iz])
             self.corr_surf[iz] =  np.mean(corr_surf0)
             self.psi_hat[:,:,iz] = self.g/self.f0_hat*self.ssha_hat[:,:]*corr_surf0
+            
+            #self.psi_hat[int(self.skx*keep_fraction):int(self.skx*(1-keep_fraction)),iz] = 0 
+            #self.psi_hat[:, int(self.sky*keep_fraction):int(self.sky*(1-keep_fraction)),iz] = 0
 
             # Compute the relative vorticity in Fourier space
             self.relvort_hat[:,:,iz] = - self.k_h**2 * self.psi_hat[:,:,iz] 
+            
+            #self.relvort_hat[int(self.skx*keep_fraction):int(self.skx*(1-keep_fraction)),iz] = 0 
+            #self.relvort_hat[:, int(self.sky*keep_fraction):int(self.sky*(1-keep_fraction)),iz] = 0
 
             # Compute the buoyancy in Fourier space
             self.buoy_hat[:,:,iz] = self.N[:,:,iz]/self.C * self.k_h * self.psi_hat[:,:,iz]
             
+            #self.buoy_hat[int(self.skx*keep_fraction):int(self.skx*(1-keep_fraction)),iz] = 0 
+            #self.buoy_hat[:, int(self.sky*keep_fraction):int(self.sky*(1-keep_fraction)),iz] = 0
+            
             # Compute the vertical velocity in Fourier space
             jacob_tmp_hat = np.zeros([self.skx,self.sky],dtype=complex)
             if iz == 0:
-                psi_s = np.real(fft.ifft2(self.psi_hat[:,:,iz])[:self.nx,:self.ny]) 
-                buoy_s = np.real(fft.ifft2(self.buoy_hat[:,:,iz])[:self.nx,:self.ny])  
+                if periodic_spec:
+                    psi_s = np.real(fft.ifft2(self.psi_hat[:,:,iz])[self.nx:2*self.nx,self.ny:2*self.ny]) 
+                else:
+                    psi_s = np.real(fft.ifft2(self.psi_hat[:,:,iz])[:self.nx,:self.ny]) 
+                psi_s = nd.gaussian_filter(psi_s,gaussian_filter)
+                psi_s[:,:] = np.ma.masked_where(self.ssh == 0,psi_s)
+                if periodic_spec:
+                    buoy_s = np.real(fft.ifft2(self.buoy_hat[:,:,iz])[self.nx:2*self.nx,self.ny:2*self.ny]) 
+                else:   
+                    buoy_s = np.real(fft.ifft2(self.buoy_hat[:,:,iz])[:self.nx,:self.ny])  
+                buoy_s = nd.gaussian_filter(buoy_s,gaussian_filter)
+                buoy_s[:,:] = np.ma.masked_where(self.ssh == 0,buoy_s)
                 psi_s = smooth_border_domain(psi_s,self.periodsmooth)
                 buoy_s = smooth_border_domain(buoy_s,self.periodsmooth)
                 jacob_s = jacobian(psi_s,buoy_s,self.dx,self.dy)  
                 jacob_s = smooth_border_domain(jacob_s,self.periodsmooth)
-                jacob_s_hat = fft.fft2(jacob_s,[self.skx,self.sky]) 
-            else : 
-                psi_tmp = np.real(fft.ifft2(self.psi_hat[:,:,iz])[:self.nx,:self.ny]) 
-                buoy_tmp = np.real(fft.ifft2(self.buoy_hat[:,:,iz])[:self.nx,:self.ny]) 
+                jacob_s[self.ssh == 0] = 0
+                
+                if periodic_spec:
+                    jacob_s_period = np.zeros((self.nx*3,self.ny*3))
+
+                    jacob_s_period[self.nx:2*self.nx,self.ny:2*self.ny] = jacob_s 
+                    jacob_s_period[:self.nx,self.ny:2*self.ny] = jacob_s[::-1,:]
+                    jacob_s_period[2*self.nx:,self.ny:2*self.ny] = jacob_s[::-1,:]
+                    jacob_s_period[self.nx:2*self.nx,:self.ny] = jacob_s[:,::-1]
+                    jacob_s_period[self.nx:2*self.nx,2*self.ny:] = jacob_s[:,::-1]
+                    jacob_s_period[:self.nx,:self.ny] = jacob_s[::-1,::-1]
+                    jacob_s_period[:self.nx,2*self.ny:] = jacob_s[::-1,::-1]
+                    jacob_s_period[2*self.nx:,:self.ny] = jacob_s[::-1,::-1]
+                    jacob_s_period[2*self.nx:,2*self.ny:] = jacob_s[::-1,::-1]
+
+                    jacob_s_period = np.delete(jacob_s_period, 2*self.nx, 0)
+                    jacob_s_period = np.delete(jacob_s_period, self.nx-1, 0)
+                    jacob_s_period = np.delete(jacob_s_period, 2*self.ny, 1)
+                    jacob_s_period = np.delete(jacob_s_period, self.ny-1, 1)
+                    
+                    jacob_s = jacob_s_period
+                
+                jacob_s_hat = np.nan_to_num(fft.fft2(jacob_s,[self.skx,self.sky]), nan=0, posinf=0, neginf=0) 
+                 
+            else :  
+                if periodic_spec:
+                    psi_tmp = np.real(fft.ifft2(self.psi_hat[:,:,iz])[self.nx:2*self.nx,self.ny:2*self.ny]) 
+                else:
+                    psi_tmp = np.real(fft.ifft2(self.psi_hat[:,:,iz])[:self.nx,:self.ny]) 
+                    
+                psi_tmp = nd.gaussian_filter(psi_tmp,gaussian_filter)
+                psi_tmp[:,:] = np.ma.masked_where(self.ssh == 0,psi_tmp)
+                if periodic_spec:
+                    buoy_tmp = np.real(fft.ifft2(self.buoy_hat[:,:,iz])[self.nx:2*self.nx,self.ny:2*self.ny]) 
+                else: 
+                    buoy_tmp = np.real(fft.ifft2(self.buoy_hat[:,:,iz])[:self.nx,:self.ny]) 
+                buoy_tmp = nd.gaussian_filter(buoy_tmp,gaussian_filter)
+                buoy_tmp[:,:] = np.ma.masked_where(self.ssh == 0,buoy_tmp)
                 psi_tmp = smooth_border_domain(psi_tmp,self.periodsmooth)
                 buoy_tmp = smooth_border_domain(buoy_tmp,self.periodsmooth)
                 jacob_tmp = jacobian(psi_tmp,buoy_tmp,self.dx,self.dy) 
                 jacob_tmp = smooth_border_domain(jacob_tmp,self.periodsmooth)
+                jacob_tmp[self.ssh == 0] = 0
+                
+                if periodic_spec:
+                    jacob_tmp_period = np.zeros((self.nx*3,self.ny*3))
+
+                    jacob_tmp_period[self.nx:2*self.nx,self.ny:2*self.ny] = jacob_tmp 
+                    jacob_tmp_period[:self.nx,self.ny:2*self.ny] = jacob_tmp[::-1,:]
+                    jacob_tmp_period[2*self.nx:,self.ny:2*self.ny] = jacob_tmp[::-1,:]
+                    jacob_tmp_period[self.nx:2*self.nx,:self.ny] = jacob_tmp[:,::-1]
+                    jacob_tmp_period[self.nx:2*self.nx,2*self.ny:] = jacob_tmp[:,::-1]
+                    jacob_tmp_period[:self.nx,:self.ny] = jacob_tmp[::-1,::-1]
+                    jacob_tmp_period[:self.nx,2*self.ny:] = jacob_tmp[::-1,::-1]
+                    jacob_tmp_period[2*self.nx:,:self.ny] = jacob_tmp[::-1,::-1]
+                    jacob_tmp_period[2*self.nx:,2*self.ny:] = jacob_tmp[::-1,::-1]
+
+                    jacob_tmp_period = np.delete(jacob_tmp_period, 2*self.nx, 0)
+                    jacob_tmp_period = np.delete(jacob_tmp_period, self.nx-1, 0)
+                    jacob_tmp_period = np.delete(jacob_tmp_period, 2*self.ny, 1)
+                    jacob_tmp_period = np.delete(jacob_tmp_period, self.ny-1, 1)
+                    
+                    jacob_tmp = jacob_tmp_period
+                
                 jacob_tmp_hat = fft.fft2(jacob_tmp,[self.skx,self.sky]) 
-            self.vertvel_hat[:,:,iz] = - ( self.C/self.N[:,:,iz])**2*( -jacob_s_hat*np.exp(self.N[:,:,iz]/self.f0_hat*self.k_h*self.z[iz]) + jacob_tmp_hat )
+                
+            self.vertvel_hat[:,:,iz] = np.nan_to_num( - ( self.C/self.N[:,:,iz])**2*( -jacob_s_hat*np.exp(self.N[:,:,iz]/self.f0_hat*self.k_h*self.z[iz]) + jacob_tmp_hat ), nan=0, posinf=0, neginf=0)
+            
+            #self.vertvel_hat[int(self.skx*keep_fraction):int(self.skx*(1-keep_fraction)),iz] = 0 
+            #self.vertvel_hat[:, int(self.sky*keep_fraction):int(self.sky*(1-keep_fraction)),iz] = 0
 
             # Back to the physical space 
-            self.psi[:,:,iz] = np.real(fft.ifft2(self.psi_hat[:,:,iz])[:self.nx,:self.ny])
-            self.relvort[:,:,iz] = np.real(fft.ifft2(self.relvort_hat[:,:,iz])[:self.nx,:self.ny])
-            self.relvort_norm[:,:,iz] = self.relvort[:,:,iz]/self.f0
-            self.buoy[:,:,iz] = np.real(fft.ifft2(self.buoy_hat[:,:,iz])[:self.nx,:self.ny])
-            self.vertvel[:,:,iz] = np.real(fft.ifft2(self.vertvel_hat[:,:,iz])[:self.nx,:self.ny])*1e3
+            if periodic_spec:
+                self.psi[:,:,iz] = np.real(fft.ifft2(self.psi_hat[:,:,iz])[self.nx:2*self.nx,self.ny:2*self.ny])
+            else: 
+                self.psi[:,:,iz] = np.real(fft.ifft2(self.psi_hat[:,:,iz])[:self.nx,:self.ny])
+            #self.psi[:,:,iz] = nd.gaussian_filter(self.psi[:,:,iz],gaussian_filter)
+            self.psi[:,:,iz] = np.ma.masked_where(self.ssh == 0,self.psi[:,:,iz])
+            if periodic_spec:
+                self.relvort[:,:,iz] = np.real(fft.ifft2(self.relvort_hat[:,:,iz])[self.nx:2*self.nx,self.ny:2*self.ny])
+            else: 
+                self.relvort[:,:,iz] = np.real(fft.ifft2(self.relvort_hat[:,:,iz])[:self.nx,:self.ny])
+            #self.relvort[:,:,iz] = nd.gaussian_filter(self.relvort[:,:,iz],gaussian_filter)
+            self.relvort[:,:,iz] = np.ma.masked_where(self.ssh == 0,self.relvort[:,:,iz])
+            self.relvort_norm[:,:,iz] = self.relvort[:,:,iz]/self.f0 
+            if periodic_spec:
+                self.buoy[:,:,iz] = np.real(fft.ifft2(self.buoy_hat[:,:,iz])[self.nx:2*self.nx,self.ny:2*self.ny]) 
+            else: 
+                self.buoy[:,:,iz] = np.real(fft.ifft2(self.buoy_hat[:,:,iz])[:self.nx,:self.ny])
+            #self.buoy[:,:,iz] = nd.gaussian_filter(self.buoy[:,:,iz],gaussian_filter)
+            self.buoy[:,:,iz] = np.ma.masked_where(self.ssh == 0,self.buoy[:,:,iz])
+            if periodic_spec:
+                self.vertvel[:,:,iz] = np.real(fft.ifft2(self.vertvel_hat[:,:,iz])[self.nx:2*self.nx,self.ny:2*self.ny])*1e3
+            else: 
+                self.vertvel[:,:,iz] = np.real(fft.ifft2(self.vertvel_hat[:,:,iz])[:self.nx,:self.ny])*1e3
+            #self.vertvel[:,:,iz] = nd.gaussian_filter(self.vertvel[:,:,iz],gaussian_filter)
+            self.vertvel[:,:,iz] = np.ma.masked_where(self.ssh == 0,self.vertvel[:,:,iz])
+            self.vertvel[:,:,iz] = np.ma.masked_invalid(self.vertvel[:,:,iz])
             
             
     #####
@@ -343,6 +514,8 @@ class vertical_reconstruction:
         
         # Plot Surface variables [SSH, SSD, SST]
         print("Plotting surface variable")
+         
+        cmap0 = 'RdBu_r'  #plt.cm.get_cmap('bwr')
         
         var_surf = ['ssha', 'ssda', 'ssta','geokindef']
         var_2d_long = ['SSH anomaly', 'SSD anomaly', 'SST anomaly','Geo. kin. def.']
@@ -355,9 +528,10 @@ class vertical_reconstruction:
                 print(var_2d_long[ivar]+' is not available for plotting')
             else: 
                 var = getattr(self, varname)
+                levs = np.arange(-np.max(np.abs(var[crop1:crop2,crop3:crop4])),np.max(np.abs(var[crop1:crop2,crop3:crop4])), 2*np.max(np.abs(var[crop1:crop2,crop3:crop4]))/100)*0.9
                 plt.figure(figsize=(3,3)) 
-                plt.contourf(self.lon[crop1:crop2,crop3:crop4],self.lat[crop1:crop2,crop3:crop4],var[crop1:crop2,crop3:crop4],cmap=plt.cm.get_cmap('bwr'))
-                plt.colorbar()
+                plt.contourf(self.lon[crop1:crop2,crop3:crop4],self.lat[crop1:crop2,crop3:crop4],var[crop1:crop2,crop3:crop4],cmap=cmap0,levels=levs,extend='both')
+                plt.colorbar(format='%.3e')
                 plt.ylabel(var_2d_long[ivar],fontsize=20)
                 plt.title('Horizontal map')
             ivar +=1
@@ -376,28 +550,28 @@ class vertical_reconstruction:
                 print(var_3d_long[ivar]+' is not available for plotting')
             else: 
                 var = getattr(self, varname)
-                levs = np.arange(-np.max(np.abs(var[crop1:crop2,crop3:crop4,:])),np.max(np.abs(var[crop1:crop2,crop3:crop4,:])), 2*np.max(np.abs(var[crop1:crop2,crop3:crop4,:]))/100)
+                levs = np.arange(-np.max(np.abs(var[crop1:crop2,crop3:crop4,:])),np.max(np.abs(var[crop1:crop2,crop3:crop4,:])), 2*np.max(np.abs(var[crop1:crop2,crop3:crop4,:]))/100)*0.9
                 plt.figure(figsize=(35,6))
                 plt.subplot(151)
-                plt.contourf(self.lon[crop1:crop2,crop3:crop4],self.lat[crop1:crop2,crop3:crop4],var[crop1:crop2,crop3:crop4,0],cmap=plt.cm.get_cmap('bwr'),levels=levs)
-                plt.colorbar()
+                plt.contourf(self.lon[crop1:crop2,crop3:crop4],self.lat[crop1:crop2,crop3:crop4],var[crop1:crop2,crop3:crop4,0],cmap=cmap0,levels=levs,extend='both')
+                plt.colorbar(format='%.3e')
                 plt.ylabel(var_3d_long[ivar],fontsize=20)
                 plt.title('Horizontal map at 0 m')
                 plt.subplot(152)
-                plt.contourf(self.lon[crop1:crop2,crop3:crop4],self.lat[crop1:crop2,crop3:crop4],var[crop1:crop2,crop3:crop4,30],cmap=plt.cm.get_cmap('bwr'),levels=levs)
-                plt.colorbar()
+                plt.contourf(self.lon[crop1:crop2,crop3:crop4],self.lat[crop1:crop2,crop3:crop4],var[crop1:crop2,crop3:crop4,30],cmap=cmap0,levels=levs,extend='both')
+                plt.colorbar(format='%.3e')
                 plt.title('Horizontal map at '+str("%.1f" %self.z[30])+' m')
                 plt.subplot(153)
-                plt.contourf(self.lon[crop1:crop2,crop3:crop4],self.lat[crop1:crop2,crop3:crop4],var[crop1:crop2,crop3:crop4,60],cmap=plt.cm.get_cmap('bwr'),levels=levs)
-                plt.colorbar()
+                plt.contourf(self.lon[crop1:crop2,crop3:crop4],self.lat[crop1:crop2,crop3:crop4],var[crop1:crop2,crop3:crop4,60],cmap=cmap0,levels=levs,extend='both')
+                plt.colorbar(format='%.3e')
                 plt.title('Horizontal map at '+str("%.1f" %self.z[60])+' m')
                 plt.subplot(154)
-                plt.contourf(self.lon[int(self.nx/2),crop3:crop4],self.z[:],np.transpose(var[int(self.nx/2),crop3:crop4,:]),cmap=plt.cm.get_cmap('bwr'),levels=levs)
-                plt.colorbar()
+                plt.contourf(self.lon[int(self.nx/2),crop3:crop4],self.z[:],np.transpose(var[int(self.nx/2),crop3:crop4,:]),cmap=cmap0,levels=levs,extend='both')
+                plt.colorbar(format='%.3e')
                 plt.title('Zonal cross section at '+str("%.1f" % self.lat[int(self.nx/2),1])+'°N')
                 plt.subplot(155)
-                plt.contourf(self.lat[crop1:crop2,int(self.ny/2)],self.z[:],np.transpose(var[crop1:crop2,int(self.ny/2),:]),cmap=plt.cm.get_cmap('bwr'),levels=levs)
-                plt.colorbar()
+                plt.contourf(self.lat[crop1:crop2,int(self.ny/2)],self.z[:],np.transpose(var[crop1:crop2,int(self.ny/2),:]),cmap=cmap0,levels=levs,extend='both')
+                plt.colorbar(format='%.3e')
                 plt.title('Meridional cross section at '+str("%.1f" % np.abs(self.lon[1,int(self.ny/2)]))+'°W')
             ivar +=1
 
@@ -463,21 +637,23 @@ def smooth_border_domain(field,bordersize=30):
     
     field_dim1 = np.shape(field)[0]
     field_dim2 = np.shape(field)[1]
-    field_smoothed = field
-    smoother = ana_gaspari_cohn(np.arange(bordersize),2*bordersize) #np.arange(bordersize)[::-1]/(bordersize-1)#
-    
-    for i in range(field_dim1):
-        field_smoothed[i,:bordersize] = field_smoothed[i,:bordersize]*smoother[::-1] + field_smoothed[i,field_dim2-bordersize:]*(1-smoother[::-1]) 
+    field_smoothed = np.copy(field) 
+     
+    smoother = ana_gaspari_cohn(np.arange(bordersize),bordersize) # GC smoothing
+    # smoother = np.arange(bordersize)[::-1]/(bordersize-1)       # linear smoothing
+
+    for i in range(field_dim1): 
+        field_smoothed[i,:bordersize] = field_smoothed[i,:bordersize]*smoother[::-1] + field_smoothed[i,field_dim2-bordersize:]*(1-smoother[::-1])  
         field_smoothed[i,field_dim2-bordersize:] = field_smoothed[i,field_dim2-bordersize:]*smoother + field_smoothed[i,:bordersize]*(1-smoother) 
     for j in range(field_dim2):
         field_smoothed[:bordersize,j] = field_smoothed[:bordersize,j]*smoother[::-1] + field_smoothed[field_dim1-bordersize:,j]*(1-smoother[::-1]) 
         field_smoothed[field_dim1-bordersize:,j] = field_smoothed[field_dim1-bordersize:,j]*smoother + field_smoothed[:bordersize,j]*(1-smoother) 
-        
+
     if plot4verif: 
         plt.subplot(122)
         plt.imshow(field_smoothed)
         plt.colorbar()
-        plt.show()
+        plt.show() 
            
     return field_smoothed   
 

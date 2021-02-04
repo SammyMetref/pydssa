@@ -109,6 +109,7 @@ class ssh_mapping:
                     
         # Write output                                                                  
         ds_oi1_grid.to_netcdf(self.output_oi)
+        
 
 
     def oi_grid(self):
