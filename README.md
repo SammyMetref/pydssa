@@ -82,6 +82,8 @@ You can find the examples in 'pydssa/data/examples/' or launch them directly fro
 
 - Optimal Interpolation (see for instance Le Traon and Dibarboure., 1999) 
 
+- Back-and-forth nudging with quasigeostrophic model (BFN-QG, Le Guillou et al., 2020)
+
 
 ### Vertical reconstruction from SSH maps 
 
@@ -92,6 +94,8 @@ You can find the examples in 'pydssa/data/examples/' or launch them directly fro
 ## References
 
 - Hoskins, B.J., Draghici, I. and Davies, H.C. (1978), A new look at the ω‐equation. Q.J.R. Meteorol. Soc., 104: 31-38. https://doi.org/10.1002/qj.49710443903
+
+- Le Guillou, F., Metref, S., Cosme, E., Le Sommer, J., Ubelmann, C., Verron, J., & Ballarotta, M. (2020). Mapping altimetry in the forthcoming SWOT era by back-and-forth nudging a one-layer quasi-geostrophic model, Journal of Atmospheric and Oceanic Technology, . Retrieved Jan 26, 2021, from https://journals.ametsoc.org/view/journals/atot/aop/JTECH-D-20-0104.1/JTECH-D-20-0104.1.xml
 
 - Le Traon, P. Y., & Dibarboure, G. (1999). Mesoscale Mapping Capabilities of Multiple-Satellite Altimeter Missions, Journal of Atmospheric and Oceanic Technology, 16(9), 1208-1223. Retrieved Dec 8, 2020, from https://journals.ametsoc.org/view/journals/atot/16/9/1520-0426_1999_016_1208_mmcoms_2_0_co_2.xml
 
