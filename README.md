@@ -54,7 +54,7 @@ Documentation is stored in pydssa/docs/ and is available online [here](http://ht
 - eSQG: Example_3Dreconstruction2_esqg_from_NATL60_Osmosis_summer.ipynb
 - Q vector: Example_3Dreconstruction3_geokindef_from_NATL60_Osmosis_winter.ipynb
 
-#### 2. Combined SSH mapping / vertical reconstruction 
+#### 3. Combined SSH mapping / vertical reconstruction 
 
 - OI/eSQG: Example_combined3Dreconstruction1_esqg-SSHmapping_OI_from_SWOT_Gulfstream.ipynb
 
