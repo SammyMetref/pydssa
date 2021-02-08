@@ -41,11 +41,24 @@ Documentation is stored in pydssa/docs/ and is available online [here](http://ht
 
 ## Examples
 
+### List of examples
+
+#### 1. SSH mapping 
+
+- OI: Example_SSHmapping1_OI_from_SWOT_Gulfstream.ipynb
+- BFN-QG: Example_SSHmapping2_BFNQG_from_SWOT_Gulfstream.ipynb
+
+#### 2. Vertical reconstruction 
+
+- eSQG: Example_3Dreconstruction1_esqg_from_NATL60_Osmosis_winter.ipynb
+- eSQG: Example_3Dreconstruction2_esqg_from_NATL60_Osmosis_summer.ipynb
+- Q vector: Example_3Dreconstruction3_geokindef_from_NATL60_Osmosis_winter.ipynb
+
+#### 2. Combined SSH mapping / vertical reconstruction 
+
+- OI/eSQG: Example_combined3Dreconstruction1_esqg-SSHmapping_OI_from_SWOT_Gulfstream.ipynb
+
 ### Download the example data
-
-#### For examples 1 and 2:
-
-#### For examples 3 and 4:
 
 The observation data are hosted [here](https://ige-meom-opendap.univ-grenoble-alpes.fr/thredds/catalog/meomopendap/extract/ocean-data-challenges/dc_data1/catalog.html) with the following directory structure
 
